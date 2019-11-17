@@ -47,6 +47,13 @@ router.get('/:id', async (req, res) => {
 // POST /habitats: Add new habitat.
 router.post('/', async (req, res) => {
     let category = req.body.category
+
+    if (!category) {
+        res.status(500)
+        res.json({
+            message: "Please enter all information."
+        });     
+    } else {
     try {
         let habitat = await db.any("INSERT INTO habitats (category) VALUES ($1) RETURNING *", [category])
         res.status(200)
@@ -61,6 +68,7 @@ router.post('/', async (req, res) => {
         })
         console.log(error)
     }
+ }
 })
 
 

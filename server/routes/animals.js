@@ -81,6 +81,7 @@ router.patch('/:id', async (req, res) => {
         let id = req.params.id
         let name = req.body.name
         let speciesId = req.body.speciesId
+        
         try {
             let animal = await db.any("UPDATE animals SET species_id = $1, nickname = $2 WHERE id = $3 RETURNING *", [speciesId, name, id]) 
             res.status(200)
@@ -95,7 +96,7 @@ router.patch('/:id', async (req, res) => {
             })
             console.log(error)
         }
-
+   
 })
 
 
