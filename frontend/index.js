@@ -1,6 +1,9 @@
 document.addEventListener('DOMContentLoaded', () =>{
     console.log('DOM is loaded')
-    displayAllSighting();
+    let allSightingsBtn = document.querySelector('#displayAllSighting');
+    allSightingsBtn.addEventListener('click', (event) =>{
+        displayAllSighting();
+    })
 })
 
 const researcherSightings = document.querySelector('#researcherName')
@@ -20,10 +23,9 @@ try{
 
 
 const displayAllSighting = () =>{
-    let allSightingsBtn = document.querySelector('#displayAllSighting');
-    allSightingsBtn.addEventListener('click', (event) =>{
-        getAllSightings();
-    })
+   
 
 
 }
+
+const createPost 
