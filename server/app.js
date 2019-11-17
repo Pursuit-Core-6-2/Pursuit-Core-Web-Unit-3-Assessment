@@ -29,7 +29,7 @@ app.use('/sightings', sightingsRouter)
 
 app.use('/', (req, res) => {
     res.send('Welcome to marine biology db')
-   })
+})
    
 
 app.listen(port, () => {

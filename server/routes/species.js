@@ -24,7 +24,6 @@ router.get('/', async (req, res) => {
 })
 
 
-
 // GET /species/:id: Get single species.
 router.get('/:id', async (req, res) => {
     let id = req.params.id 

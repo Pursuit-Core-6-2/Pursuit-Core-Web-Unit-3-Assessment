@@ -80,7 +80,7 @@ router.patch('/:id', async (req, res) => {
 
     if (name && jobTitle) {
         try {
-            let researcher = await db.any("UPDATE researchers SET firstname = $1, job_title = $1 WHERE id = $2 RETURNING *", [name, jobTitle, id]) // changed from 'none' to 'any' because I'm returning all rows updated
+            let researcher = await db.any("UPDATE researchers SET firstname = $1, job_title = $2 WHERE id = $3 RETURNING *", [name, jobTitle, id]) // changed from 'none' to 'any' because I'm returning all rows updated
             res.status(200)
             res.json({
                 payload: researcher,
