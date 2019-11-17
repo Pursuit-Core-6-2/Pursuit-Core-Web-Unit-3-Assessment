@@ -27,18 +27,26 @@ router.get("/", async (req, res, next) => {
 
 router.get("/:id", async (req, res) => {
     try {
+
         let selectQuery = `SELECT * FROM researchers WHERE id = $1`
         let singleResearcher = await db.any(selectQuery, parseInt(req.params.id))
-        res.json({
-            status: "success",
-            message: `Here is a single researcher!`,
-            payload: singleResearcher
-        });
+        if (singleResearcher.length === 1) {
+            res.json({
+                status: "success",
+                message: `Here is a single researcher!`,
+                payload: singleResearcher
+            });
+        } else {
+            return error
+        }
+
+
+
     } catch (error) {
         res.json({
-            status:"error", 
+            status: "error",
             message: `researcher not found`,
-            payload:null
+            payload: null
         });
     }
 })
@@ -53,16 +61,24 @@ router.post("/", async (req, res) => {
         let insertQuery = `INSERT INTO researchers(name,job_title) 
         VALUES($1,$2);`
         await db.none(insertQuery, [req.body.name, req.body.job_title])
-        res.json({
-            status: "success",
-            message: `Added a new researcher`,
-            payload: req.body
-        });
+        if (req.body.job_title === "" || req.body.name === "") {
+            return error
+            // }else if (req.body.job_title === "" && req.body.name === "" ){
+            //     return error
+        } else {
+
+            res.json({
+                status: "success",
+                message: `Added a new researcher`,
+                payload: req.body
+            });
+
+        }
     } catch (error) {
         res.json({
             status: "error",
             message: `no researcher added!`
-            
+
         });
     }
 })
@@ -73,12 +89,12 @@ router.post("/", async (req, res) => {
 router.patch('/:id', async (req, res, next) => {
     try {
         let researcher_id = parseInt(req.params.id)
-        let updateQuery = 
-        `UPDATE researchers
+        let updateQuery =
+            `UPDATE researchers
         SET name = $1, 
         job_title = $2
         wHERE id = $3`
-        await db.none(updateQuery, [req.body.name, req.body.job_title,researcher_id])
+        await db.none(updateQuery, [req.body.name, req.body.job_title, researcher_id])
         res.json({
             status: "success",
             message: `Updated researcher Info`,
@@ -101,13 +117,17 @@ router.patch('/:id', async (req, res, next) => {
 
 router.delete("/:id", async (req, res) => {
     try {
-        let deleteQuery = `DELETE FROM researchers WHERE id = $1;`
-        await db.none(deleteQuery, parseInt(req.params.id));
-        res.json({
-           status: "success",
-            message: `Removed a researcher`,
-            payload: req.body
-        });
+        let selectQuery = `SELECT * FROM researchers WHERE id = $1`
+        let singleResearcher = await db.any(selectQuery, parseInt(req.params.id))
+        if (singleResearcher.length === 1) {
+            let deleteQuery = `DELETE FROM researchers WHERE id = $1;`
+            await db.none(deleteQuery, parseInt(req.params.id));
+            res.json({
+                status: "success",
+                message: `Removed a researcher`,
+                payload: singleResearcher
+            });
+        }
     } catch (error) {
         res.json({
             status: "error",
@@ -118,4 +138,4 @@ router.delete("/:id", async (req, res) => {
 
 
 
-    module.exports = router;
+module.exports = router;
