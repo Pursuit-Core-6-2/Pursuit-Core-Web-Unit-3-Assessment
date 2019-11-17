@@ -79,4 +79,39 @@ router.post('/', async (req, res) => {
     }
 })
 
+//update an existing animal
+router.patch('/:animal_id', async (req, res) => {
+    let updateInfo = ''
+    for(key in req.body) {
+        let set = `${key} = '${req.body[key]}'`
+        updateInfo += set + ','
+    }
+
+    updateInfo = updateInfo.slice(0, updateInfo.length - 1)
+    console.log(updateInfo)
+
+    let updateAnimal = 
+    `
+        UPDATE animals
+        SET ${updateInfo}
+        WHERE id = '${req.params.animal_id}'
+    `
+    try {
+        await db.none(updateAnimal)
+        res.json({
+            status: "success",
+            message: "Animal updated",
+            payload: req.body
+        })
+    } catch(error) {
+        console.log(error)
+        res.status(404)
+        res.json({
+            status: "error",
+            message: "Could not update animal",
+            payload: null
+        })
+    }
+})
+
 module.exports = router;
