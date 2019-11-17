@@ -9,6 +9,8 @@ const researchRouter = require('./routes/researchers_route')
 const speciesRouter = require('./routes/species_route')
 const animalsRouter = require('./routes/animals')
 const habitatsRouter = require('./routes/habitats_route')
+const sightingsRouter = require('./routes/sightings')
+
 
 
 app.use(cors());
@@ -21,6 +23,7 @@ app.use('/researcher',researchRouter);
 app.use('/species',speciesRouter);
 app.use('/animals',animalsRouter);
 app.use('/habitats',habitatsRouter);
+app.use('/sightings',sightingsRouter);
 
 
 app.listen(port,()=>{
