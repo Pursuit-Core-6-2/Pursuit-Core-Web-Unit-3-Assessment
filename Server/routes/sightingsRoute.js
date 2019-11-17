@@ -115,6 +115,7 @@ router.post('/', async (req, res) => {
     
     try {
         await db.none(addNewSighting, [req.body.researcher_id, req.body.species_id, req.body.habitats_id])
+        console.log(req.body.researcher_id, req.body.species_id, req.body.habitats_id)
         res.json({
             status: "success",
             message: "Made a new sighting",
@@ -130,5 +131,37 @@ router.post('/', async (req, res) => {
         })
     }
 })
+
+//Delete a sighting
+router.delete('/:sighting_id', async (req, res) => {
+    let sightingDelete =
+    `DELETE FROM sightings WHERE id = '${req.params.sighting_id}'`
+    
+    let sightingRecord = await db.one (
+        `SELECT
+            *
+        FROM
+            sightings
+        WHERE id = ${req.params.sighting_id}`)
+
+    console.log(sightingRecord)
+
+    try {
+        await db.none(sightingDelete)
+        res.json({
+            status: "success",
+            message: "Sighting deleted",
+            payload: sightingRecord
+        })
+    } catch(error) {
+        res.status(404)
+        res.json({
+            status: "error",
+            message: 'Could not delete sighting',
+            payload: null
+        })
+    }
+})
+
 
 module.exports = router;
