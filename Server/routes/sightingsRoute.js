@@ -9,11 +9,18 @@ router.get('/', async (req, res) => {
     console.log('Sightings endpoint reached/ ', Date())
     try {
         let sightings = await db.any (`
-            SELECT
-                *
-            FROM
-                sightings
-        `)
+        SELECT 
+            species.name, species.is_mammal, sightings.researcher_id
+        FROM species
+        INNER JOIN sightings ON  sightings.species_id = species.id
+        `
+            // `
+            // SELECT
+            //     *
+            // FROM
+            //     sightings
+            // `
+            )
         res.json({
                 status: "success",                      
                 message: "retrieved all sightings", 
@@ -165,12 +172,3 @@ router.delete('/:sighting_id', async (req, res) => {
 
 
 module.exports = router;
-
-
-// console.log(response);
-// payload = response.data.payload;
-// console.log(payload);
-
-// let listSighting = document.createElement("li");
-// listSighting.innerText = `Sighting ID: ${payload.id}, Name: ${payload.name}, Species ID: ${payload.species_id}, Habitat ID: ${payload.habitats_id}`;
-// researcherSightList.appendChild(listSighting);
