@@ -19,5 +19,22 @@ router.get('/', async (req, res) => {
         });
     }
 });
-
+router.get('/:id', async (req, res) => {
+    let id = req.params.id;
+    try {
+        let sighting = await db.one('SELECT * FROM sightings WHERE id = $1', id);
+        res.json({
+            status: 'Success',
+            message: 'Sighting retrieved',
+            payload: sighting
+        });
+    }
+    catch(error) {
+        res.json({
+            status: 'Error',
+            message: 'Could not load sighting.',
+            payload: null,
+        });
+    }
+});
 module.exports = router;
