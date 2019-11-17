@@ -70,6 +70,7 @@ router.post('/', async (req, res) => {
             payload: req.body
         })
     } catch(error) {
+        res.status(404)
         res.json({
             status: "error",
             message: "Could not create researcher",
@@ -103,7 +104,8 @@ router.patch('/:staff_id', async (req, res) => {
             payload: req.body
         })
     } catch(error) {
-        console.log(error)
+        // console.log(error)
+        res.status(404)
         res.json({
             status: "error",
             message: "Could not update researcher",
@@ -133,6 +135,7 @@ router.delete('/:staff_id', async (req, res) => {
             payload: staffMember
         })
     } catch(error) {
+        res.status(404)
         res.json({
             status: "error",
             message: 'Could not delete researcher',

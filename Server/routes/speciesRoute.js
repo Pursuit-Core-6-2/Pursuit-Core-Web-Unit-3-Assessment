@@ -56,4 +56,27 @@ router.get('/:species_id', async (req, res) => {
     }
 })
 
+//Log a new species
+router.post('/', async (req, res) => {
+    let addNewStaff =
+    `INSERT INTO species(name, is_mammal)
+        VALUES($1, $2)`
+    
+    try {
+        await db.none(addNewStaff, [req.body.name, req.body.is_mammal])
+        res.json({
+            status: "success",
+            message: "Logged a new species",
+            payload: req.body
+        })
+    } catch(error) {
+        res.status(404)
+        res.json({
+            status: "error",
+            message: "Could not log that species",
+            payload: null
+        })
+    }
+})
+
 module.exports = router;
