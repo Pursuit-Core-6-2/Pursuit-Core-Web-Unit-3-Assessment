@@ -7,9 +7,10 @@ router.get('/', async (request, response) => {
     console.log('currently running');
 
     try {
-        let researchers = await db.any('SELECT * FROM researchers');
+        let researchers = await db.any(`SELECT * FROM researchers`);
+        
         response.json({
-            status: 'sucess',
+            status: 'success',
             message: 'Retrieved all of the researchers.',
             payload: {
                 researchers: researchers
@@ -33,9 +34,11 @@ router.get('/:id', async (request, response) => {
 
     try {
         let researcherQuery = `SELECT * FROM researchers WHERE id = $1`;
-        let researcher = await db.one(researcherQuery, [id])
+        
+        let researcher = await db.one(researcherQuery, [id]);
+        
         response.json({
-            status: 'sucess',
+            status: 'success',
             message: 'Retrieved selected researcher.',
             payload: {
                 researcher: researcher
@@ -54,27 +57,41 @@ router.get('/:id', async (request, response) => {
 // Create a new Researcher
 router.post('/', async (request, response) => {
     console.log('currently running');
+    let name = request.body.name;
+    let job_title = request.body.job_title;
 
     try {
+        let researcherInfo = {
+            name: name,
+            job_title: title
+        };
+
         let createResearcher = `INSERT INTO researchers (name, job_title)
         VALUES ($1, $2)`;
 
-        await db.none(createResearcher, [request.body.name, request.body.job_title]);
+        await db.none(createResearcher, [name, job_title]);
+        
         response.json({
-            status: 'sucess',
-            message: 'New researcher created.'
-        })
+            status: 'success',
+            message: 'New researcher created.',
+            payload: {
+                researcherInfo: researcherInfo
+            }
+        });
     } catch (error) {
         console.log(error);
         response.json({
             status: 'error',
-            message: 'Researcher could not be created.'
-        })
+            message: 'Researcher could not be created.',
+            payload: null
+        });
     }
 });
 
 // Update a single researcher's info
 router.patch('/:id', async (request, response) => {
+    console.log('currently running');
+
     let id = request.params.id;
     let newName = request.body.name;
     let newTitle = request.body.job_title;
@@ -84,11 +101,12 @@ router.patch('/:id', async (request, response) => {
             name: newName,
             title: newTitle
         }
+
         let patchQuery = `UPDATE researchers SET name = $1, job_title = $2 WHERE id = $3`
         await db.none(patchQuery, [newName, newTitle, id]);
 
         response.json({
-            status: 'sucess',
+            status: 'success',
             message: 'Researcher sucessfully patched.',
             payload: patchInfo
         })
@@ -96,13 +114,16 @@ router.patch('/:id', async (request, response) => {
         console.log(error);
         response.json({
             status: 'error',
-            message: 'An error occured while trying to complete request'
+            message: 'An error occured while trying to complete request',
+            payload: null
         });
     }
 });
 
-// Delete a single researcher
+// Delete a single researcher from database
 router.delete('/:id', async (request, response) => {
+    console.log('currently running');
+
     let id = request.params.id;
 
     try {
@@ -110,7 +131,7 @@ router.delete('/:id', async (request, response) => {
         await db.none(deleteQuery, [id])
         
         response.json({
-            status: 'sucess',
+            status: 'success',
             message: 'Researcher was sucessfully deleted.'
         })
     } catch (error) {
