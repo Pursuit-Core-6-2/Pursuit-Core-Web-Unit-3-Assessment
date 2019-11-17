@@ -234,7 +234,7 @@ router.delete('/:id', async (request, response) => {
     const requestQuery = `
         UPDATE animals 
         SET available = false
-        WHERE id = $1
+        WHERE id = $1 AND available = true
         RETURNING id, species_id, nickname
         `;
 
