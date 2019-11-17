@@ -11,16 +11,16 @@ async function loadList(){
     let list = document.querySelector("#sightingsList")
     // list.innerText = ""
 
-    const response = await axios.get(`http://localhost:8080/sightings`);
+    const response = await axios.get(`http://localhost:8080/sightings/allSightings`);
     console.log(response.data.payload)
 
     response.data.payload.forEach((sighting) => {
         let postList = document.createElement("li")
-        console.log(sighting.id)
-        console.log(sighting.researcher_id)
-        console.log(sighting.habitat_id)
-        console.log(sighting.species_id)
-    postList.innerText = `researcher_id: ${sighting.researcher_id}  habitat_id: ${sighting.habitat_id} species_id: ${sighting.species_id}`
+        // console.log(sighting.id)
+        // console.log(sighting.researcher_id)
+        // console.log(sighting.habitat_id)
+        // console.log(sighting.species_id)
+    postList.innerText = `${sighting.researchers} has spotted ${sighting.species} in ${sighting.habitats} ${sighting.sightings} time`
         list.appendChild(postList);
     })
 }
@@ -50,7 +50,7 @@ async function loadReseacherList(){
     // let arr = response.data.payload
    // let name = response.data.payload.researchers
    // let sighting = response.data.payload.sightings
-   // let species = response.data.payload.species
+//     let species = response.data.payload.species
     // let habitat = response.data.payload.habitat
 
     // for(let i = 0; i <= arr.length; i++){
