@@ -56,6 +56,7 @@ router.get('/:staff_id', async (req, res) => {
     }
 })
 
+//create a new staff member
 router.post('/', async (req, res) => {
     let addNewStaff =
     `INSERT INTO researchers(name, job_title)
@@ -65,13 +66,47 @@ router.post('/', async (req, res) => {
         await db.none(addNewStaff, [req.body.name, req.body.job_title])
         res.json({
             status: "success",
-            message: "retrieved single researcher",
+            message: "Created a new researcher",
             payload: req.body
         })
     } catch(error) {
         res.json({
             status: "error",
-            message: "researcher not found",
+            message: "Could not create researcher",
+            payload: null
+        })
+    }
+})
+
+//update an existing staff member
+router.patch('/:staff_id', async (req, res) => {
+    let updateInfo = ''
+    for(key in req.body) {
+        let set = `${key} = '${req.body[key]}'`
+        updateInfo += set + ','
+    }
+
+    updateInfo = updateInfo.slice(0, updateInfo.length - 1)
+    console.log(updateInfo)
+
+    let updateStaff = 
+    `
+        UPDATE researchers
+        SET ${updateInfo}
+        WHERE id = '${req.params.staff_id}'
+    `
+    try {
+        await db.none(updateStaff)
+        res.json({
+            status: "success",
+            message: "Researcher updated",
+            payload: req.body,
+        })
+    } catch(error) {
+        console.log(error)
+        res.json({
+            status: "error",
+            message: "Could not update researcher",
             payload: null
         })
     }
