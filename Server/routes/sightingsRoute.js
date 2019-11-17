@@ -30,7 +30,7 @@ router.get('/', async (req, res) => {
 })
 
 //get all sightings of certain species
-router.get('/species/:species_name', async (req, res) => {
+router.get('/species/:species_id', async (req, res) => {
     console.log('Sightings species endpoint reached/ ', Date())
     try {
         let speciesSightings = await db.any (`
@@ -38,12 +38,38 @@ router.get('/species/:species_name', async (req, res) => {
            species.name, species.is_mammal, sightings.researcher_id
         FROM species
         INNER JOIN sightings ON  sightings.species_id = species.id
-        WHERE species.name = '${req.params.species_name}'
+        WHERE species.id = '${req.params.species_id}'
         `)
         res.json({
                 status: "success",                      
                 message: "retrieved all sightings", 
                 payload: speciesSightings
+        })
+    } catch (error) {
+        res.status(500)
+        res.json({
+            status: "error",
+            message: "Sightings not found",
+            payload: null
+        })
+    }
+})
+
+//get all sightings of certain researcher
+router.get('/researchers/:researcher_id', async (req, res) => {
+    console.log('Sightings species endpoint reached/ ', Date())
+    try {
+        let researcherSightings = await db.any (`
+        SELECT 
+            researchers.name, sightings.species_id, sightings.habitats_id
+        FROM researchers
+        INNER JOIN sightings ON  sightings.researcher_id = researchers.id
+        WHERE researchers.id = ${req.params.researcher_id}
+        `)
+        res.json({
+                status: "success",                      
+                message: "retrieved all researchers sightings", 
+                payload: researcherSightings
         })
     } catch (error) {
         res.status(500)
