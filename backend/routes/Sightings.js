@@ -51,7 +51,7 @@ router.get('/researchers/:id', async (req, res)=> {
     const inputQuery = (`SELECT * FROM sightings WHERE researcher_id = $1`)
 
     try{
-        const result = db.any(inputQuery, [id])
+        const result = await db.any(inputQuery, [id])
         res.json({
             status:'success',
             message:'Retrieved all sightings by ',
@@ -78,7 +78,7 @@ router.get('/habitats/:id', async (req, res) => {
     //                       INNER JOIN researchers ON sightings.researcher_id = researcher_id
     //                       WHERE habitat_id = $1`)
     try{
-        const result = db.many(inputQuery, [id])
+        const result = await db.many(inputQuery, [id])
         res.json({
             status:'success',
             message:'Retrieved all habitats sightings by id ',
