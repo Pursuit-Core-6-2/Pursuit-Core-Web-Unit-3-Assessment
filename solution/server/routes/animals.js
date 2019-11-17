@@ -19,5 +19,23 @@ router.get('/', async (req, res) => {
         });
     }
 });
+router.get('/:id', async (req, res) => {
+    let id = req.params.id;
+    try {
+        let animal = await db.one('SELECT * FROM animals WHERE id = $1', id);
+        res.json({
+            status: 'Success',
+            message: 'Animal retrieved',
+            payload: animal
+        });
+    }
+    catch(error) {
+        res.json({
+            status: 'Error',
+            message: 'Could not load animal.',
+            payload: null,
+        });
+    }
+});
 
 module.exports = router;
