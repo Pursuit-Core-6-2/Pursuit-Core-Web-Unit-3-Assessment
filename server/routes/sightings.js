@@ -9,9 +9,9 @@ const db = require('./database');
 router.get('/', async (req, res) => {
     try {
        // let sightings = await db.any("SELECT * FROM sightings")
-       // let sightings = await db.any("SELECT * FROM sightings, researchers WHERE sightings.researcher_id = researchers.id")
-      let sightings = await db.any("SELECT * FROM sightings INNER JOIN researchers ON researchers.id = sightings.researcher_id INNER JOIN species ON species.id = sightings.species_id INNER JOIN habitats ON habitats.id = sightings.habitat_id")
+       // let sightings = await db.any("SELECT * FROM sightings, researchers WHERE sightings.researcher_id = researchers.id"))
         res.status(200)
+      let sightings = await db.any("SELECT * FROM sightings INNER JOIN researchers ON researchers.id = sightings.researcher_id INNER JOIN species ON species.id = sightings.species_id INNER JOIN habitats ON habitats.id = sightings.habitat_id")
         res.json({
             payload: sightings,
             message: "Success. Retrieved all the sightings."
@@ -30,7 +30,8 @@ router.get('/', async (req, res) => {
 router.get('/species/:id', async (req, res) => {
     let id = req.params.id 
     try {
-        let sightings = await db.any("SELECT * FROM sightings WHERE species_id = $1", [id])
+        //let sightings = await db.any("SELECT * FROM sightings WHERE species_id = $1", [id])
+        let sightings = await db.any("SELECT * FROM sightings INNER JOIN species ON species.id = sightings.species_id WHERE species_id = $1", [id])
         res.status(200)
         res.json({
             payload: sightings,
@@ -50,7 +51,8 @@ router.get('/species/:id', async (req, res) => {
 router.get('/researchers/:id', async (req, res) => {
     let id = req.params.id 
     try {
-        let sightings = await db.any("SELECT * FROM sightings WHERE researcher_id = $1", [id])
+        //let sightings = await db.any("SELECT * FROM sightings WHERE researcher_id = $1", [id])
+        let sightings = await db.any("SELECT * FROM sightings INNER JOIN researchers ON researchers.id = sightings.researcher_id WHERE researcher_id = $1", [id])
         res.status(200)
         res.json({
             payload: sightings,
@@ -71,7 +73,8 @@ router.get('/researchers/:id', async (req, res) => {
 router.get('/habitats/:id', async (req, res) => {
     let id = req.params.id 
     try {
-        let sightings = await db.any("SELECT * FROM sightings WHERE habitat_id = $1", [id])
+       // let sightings = await db.any("SELECT * FROM sightings WHERE habitat_id = $1", [id])
+       let sightings = await db.any("SELECT * FROM sightings INNER JOIN habitats ON habitats.id = sightings.habitat_id WHERE habitat_id = $1", [id])
         res.status(200)
         res.json({
             payload: sightings,
