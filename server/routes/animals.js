@@ -81,9 +81,25 @@ router.patch('/:id', async (req, res) => {
         let id = req.params.id
         let name = req.body.name
         let speciesId = req.body.speciesId
-        
+
+        if (name && speciesId) {
+            try {
+                let animal = await db.any("UPDATE animals SET nickname = $1, species_id = $2 WHERE id = $3 RETURNING *", [name, speciesId, id]) 
+                res.status(200)
+                res.json({
+                    payload: animal,
+                    message: `Success. Updated ${name} in animals table.`
+                });
+            } catch (error) {
+                res.status(500)
+                res.json({
+                    message: "Error. Something went wrong!"
+                })
+                console.log(error)
+            }
+        } else if (name) {
         try {
-            let animal = await db.any("UPDATE animals SET species_id = $1, nickname = $2 WHERE id = $3 RETURNING *", [speciesId, name, id]) 
+            let animal = await db.any("UPDATE animals SET nickname = $1 WHERE id = $2 RETURNING *", [name, id]) 
             res.status(200)
             res.json({
                 payload: animal,
@@ -96,7 +112,27 @@ router.patch('/:id', async (req, res) => {
             })
             console.log(error)
         }
-   
+    } else if (speciesId) {
+        try {
+            let animal = await db.any("UPDATE animals SET species_id = $1 WHERE id = $2 RETURNING *", [speciesId, id]) 
+            res.status(200)
+            res.json({
+                payload: animal,
+                message: `Success. Updated ${name} in animals table.`
+            });
+        } catch (error) {
+            res.status(500)
+            res.json({
+                message: "Error. Something went wrong!"
+            })
+            console.log(error)
+        }
+    } else {
+        res.status(500)
+        res.json({
+            message: "Error. Something went wrong!"
+        })
+    }  
 })
 
 
