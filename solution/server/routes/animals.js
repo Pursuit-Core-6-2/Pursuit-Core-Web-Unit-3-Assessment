@@ -57,5 +57,46 @@ router.post('/', async (req, res) => {
         });
     }
 });
-
+router.patch('/:id', async (req, res) => {
+    let newInfo = req.body;
+    let researcherId = Number(req.params.id);
+    try {
+        let updateQuery = `UPDATE researchers 
+                SET r_name = $1, job_title = $2
+                WHERE id = $3`
+        await db.none(updateQuery, [newInfo.r_name, newInfo.job_title, researcherId]);
+        res.json({
+            status: 'Success',
+            message: 'User was successfully updated',
+            payload: newInfo
+        })
+    }
+    catch (error) {
+        console.log(error)
+        res.json({
+            status: 'Error',
+            message: 'User could not be updated',
+            payload: null
+        })
+    }
+});
+router.delete('/:id', async (req, res) => {
+    let animalId = Number(req.params.id);
+    try {
+        let deleteQuery = `DELETE FROM animals
+                    WHERE id = $1`;
+        await db.none(deleteQuery, animalId);
+        res.json({
+            status: 'Success',
+            message: 'Animal was deleted from database',
+        })
+    }
+    catch(error) {
+        res.json({
+            status: 'Error',
+            message: 'Animal could not be deleted',
+            payload: null
+        });
+        };
+});
 module.exports = router;
