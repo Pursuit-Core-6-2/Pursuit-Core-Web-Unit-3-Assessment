@@ -9,8 +9,11 @@ app.use(express.json());
 
 // Routers
 const researcherRouter = require('./routes/researchersRoute');
+const speciesRouter = require('./routes/speciesRoute');
+
 
 app.use('/researchers', researcherRouter);
+app.use('/species', speciesRouter);
 app.use('/', (req, res) => res.send('Welcome to the Marine Bio Search Team'));
 
 
