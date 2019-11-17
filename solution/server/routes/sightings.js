@@ -55,5 +55,22 @@ router.get('/researchers/:id', async (req, res) => {
         });
     }
 });
-
+router.get('/habitats/:id', async (req, res) => {
+    let habitatId = Number(req.params.id);
+    try {
+        let sightings = await db.any('SELECT * FROM sightings WHERE habitat_id = $1', habitatId);
+        res.json({
+            status: 'Success',
+            message: 'Sightings by habitat retrieved',
+            payload: sightings
+        });
+    }
+    catch(error) {
+        res.json({
+            status: 'Error',
+            message: 'Could not load sighting by habitat.',
+            payload: null,
+        });
+    }
+});
 module.exports = router;
