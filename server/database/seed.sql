@@ -16,7 +16,7 @@ CREATE TABLE researchers(
 CREATE TABLE species(
     id SERIAL PRIMARY KEY,
     name VARCHAR, 
-    is_mamamal BOOLEAN
+    is_mammal BOOLEAN
 );
 
 CREATE TABLE animals(
@@ -31,7 +31,7 @@ CREATE TABLE habitats(
 CREATE TABLE sightings(
     id SERIAL PRIMARY KEY,
     researcher_ID INT REFERENCES researchers(id) ON DELETE SET NULL,
-    species_id INT REFERENCES species(id) ON DELETE CASCADE,
+    species_id  INT REFERENCES species(id) ON DELETE CASCADE,
     habitat_id INT REFERENCES habitats(id)
 );
 
@@ -44,7 +44,7 @@ VALUES('Mariana Aleta', 'Project Lead'),
 ('Ezra Flip', 'Research Intern');
 
 
-INSERT INTO species( name,is_mamamal)
+INSERT INTO species( name,is_mammal)
 VALUES('Dolphin', 'true'),
 ('Moray Eel', 'false'),
 ('Tiger Shark', 'false'),
@@ -77,9 +77,12 @@ VALUES(4, 4, 4 ),
 (5,2,2),
 (2,1,1),
 (5,2,1);
+
+
 SELECT * FROM researchers;
 SELECT * FROM species;
 SELECT * FROM animals;
 SELECT * FROM habitats;
 SELECT * FROM sightings;
+
 
