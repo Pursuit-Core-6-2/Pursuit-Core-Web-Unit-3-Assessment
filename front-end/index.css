@@ -1,0 +1,8 @@
+.main-container{
+    display: grid;
+    grid-auto-rows: 50vh;
+}
+
+.bottom{
+    text-align: center;
+}

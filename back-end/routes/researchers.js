@@ -26,7 +26,7 @@ router.get('', async (req,res) =>{
 router.get('/:id', async (req,res) =>{ 
     try{
         const id = req.params.id
-        const researcher = await db.any(`select * from researchers where id = ${id}`);
+        const researcher = await db.one(`select * from researchers where id = ${id}`);
         res.json({
             status : 'success',
             message : 'retrieved single researcher',
@@ -74,7 +74,7 @@ router.post('', async (req,res) =>{
     }
 })
 
-//Updates a reseaercher
+//Updates an existing reseaercher
 router.patch('/:id', async (req, res) => {
     try{
         const id = req.params.id

@@ -26,7 +26,7 @@ router.get('', async (req,res) =>{
 router.get('/:id', async (req,res) =>{ 
     try{
         const id = req.params.id
-        const species = await db.any(`select * from species where id = ${id}`);
+        const species = await db.one(`select * from species where id = ${id}`);
         res.json({
             status : 'success',
             message : 'retrieved single species',

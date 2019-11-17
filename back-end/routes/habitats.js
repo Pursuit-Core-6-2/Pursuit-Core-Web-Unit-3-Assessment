@@ -29,7 +29,7 @@ router.get('', async (req,res) =>{
 router.get('/:id', async (req,res) =>{ 
     try{
         const id = req.params.id
-        const habitat = await db.any(`select * from habitats where id = ${id}`);
+        const habitat = await db.one(`select * from habitats where id = ${id}`);
         res.json({
             status : 'success',
             message : 'retrieved single habitat',

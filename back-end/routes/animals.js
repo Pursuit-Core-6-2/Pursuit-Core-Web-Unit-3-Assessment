@@ -26,7 +26,7 @@ router.get('', async (req,res) =>{
 router.get('/:id', async (req,res) =>{ 
     try{
         const id = req.params.id
-        const animal = await db.any(`select * from animals where id = ${id}`);
+        const animal = await db.one(`select * from animals where id = ${id}`);
         res.json({
             status : 'success',
             message : 'retrieved single animal',
@@ -112,7 +112,7 @@ router.patch('/:id', async (req, res) => {
     }
 })
 
-//Deletes an animal
+//Deletes an existing animal
 router.delete('/:id', async (req, res) => {
     try {
         const id = req.params.id
