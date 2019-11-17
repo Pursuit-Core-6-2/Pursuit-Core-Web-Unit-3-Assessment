@@ -81,6 +81,32 @@ router.get('/researchers/:researcher_id', async (req, res) => {
     }
 })
 
+//get all sightings of certain researcher
+router.get('/habitats/:habitat_id', async (req, res) => {
+    console.log('Sightings species endpoint reached/ ', Date())
+    try {
+        let habitatSightings = await db.any (`
+        SELECT 
+            habitats.category, sightings.species_id, sightings.habitats_id
+        FROM habitats
+        INNER JOIN sightings ON  sightings.habitats_id = habitats.id
+        WHERE habitats.id = ${req.params.habitat_id}
+        `)
+        res.json({
+                status: "success",                      
+                message: "retrieved all habitat sightings from one type", 
+                payload: habitatSightings
+        })
+    } catch (error) {
+        res.status(500)
+        res.json({
+            status: "error",
+            message: "Sightings not found",
+            payload: null
+        })
+    }
+})
+
 //Report new sighting
 router.post('/', async (req, res) => {
     let addNewSighting =
