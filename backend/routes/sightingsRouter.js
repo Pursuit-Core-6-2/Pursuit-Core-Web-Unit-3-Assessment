@@ -110,4 +110,22 @@ router.post('/sightings', async(req,res) =>{
     }
 })
 
+router.delete('/:id', async(req, res) =>{
+    let id = req.params.id
+    try{
+        let deleteSighting = await db.none(`DELETE FROM sighting WHERE id = ${id}`)
+        res.json({
+            status: 'success',
+            message: 'sighting has been deleted',
+            payload: deleteSighting
+        })
+
+    }catch(error){
+        res.json({
+            status: 'error',
+            message: null
+        })
+    }
+})
+
 module.exports = router;

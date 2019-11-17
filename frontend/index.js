@@ -23,9 +23,10 @@ try{
 
 
 const displayAllSighting = () =>{
-   
 
 
 }
 
-const createPost 
+// const createPost = (sightingsArr) =>{
+//     for(let i = 0; i < sightingsArr.length; i++)
+// }
