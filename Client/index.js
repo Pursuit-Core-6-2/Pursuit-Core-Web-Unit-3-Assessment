@@ -68,6 +68,7 @@ const getAllResearchers = async (containerDiv, textContainer) => {
         const response = await axios.get(`http://localhost:29000/researchers`);
         return response.data.payload
     } catch (err) {
+        console.log(err)
         containerDiv.style.display = 'block'
         if (err.response.data.message) {
             textContainer.innerText = err.response.data.message;
@@ -82,6 +83,7 @@ const getAllSightings = async (resultContainer, feedbackContainer, textContainer
         const response = await axios.get(`http://localhost:29000/sightings`);
         displayResultIntoDOM(response.data.payload, resultContainer, feedbackContainer, textContainer);
     } catch (err) {
+        console.log(err)
         feedbackContainer.style.display = 'block'
         if (err.response.data.message) {
             textContainer.innerText = err.response.data.message;
@@ -96,6 +98,7 @@ const getAllSightingsByResearcherID = async (id, resultContainer, feedbackContai
         const response = await axios.get(`http://localhost:29000/sightings/researchers/${id}`);
         displayResultIntoDOM(response.data.payload, resultContainer, feedbackContainer, textContainer);
     } catch (err) {
+        console.log(err)
         feedbackContainer.style.display = 'block'
         if (err.response.data.message) {
             textContainer.innerText = err.response.data.message;
@@ -122,6 +125,7 @@ const displayResultIntoDOM = async (data, resultContainer, feedbackContainer, te
                 const person = await axios.get(`http://localhost:29000/researchers/${result.researcher_id}`);
                 researcherName = person.data.payload.name;
             } catch (err) {
+                console.log(err)
                 feedbackContainer.style.display = 'block'
                 if (err.response.data.message) {
                     textContainer.innerText = err.response.data.message;
@@ -134,6 +138,7 @@ const displayResultIntoDOM = async (data, resultContainer, feedbackContainer, te
                 const animal = await axios.get(`http://localhost:29000/species/${result.species_id}`);
                 animalSpecies = animal.data.payload.name;
             } catch (err) {
+                console.log(err)
                 feedbackContainer.style.display = 'block'
                 if (err.response.data.message) {
                     textContainer.innerText = err.response.data.message;
@@ -146,6 +151,7 @@ const displayResultIntoDOM = async (data, resultContainer, feedbackContainer, te
                 const animal = await axios.get(`http://localhost:29000/animals/${result.species_id}`);
                 animalNickname = animal.data.payload.nickname;
             } catch (err) {
+                console.log(err)
                 feedbackContainer.style.display = 'block'
                 if (err.response.data.message) {
                     textContainer.innerText = err.response.data.message;
@@ -158,6 +164,7 @@ const displayResultIntoDOM = async (data, resultContainer, feedbackContainer, te
                 const location = await axios.get(`http://localhost:29000/habitats/${result.habitat_id}`);
                 habitat = location.data.payload.category;
             } catch (err) {
+                console.log(err)
                 feedbackContainer.style.display = 'block'
                 if (err.response.data.message) {
                     textContainer.innerText = err.response.data.message;
