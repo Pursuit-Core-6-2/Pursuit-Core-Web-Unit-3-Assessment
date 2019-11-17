@@ -26,26 +26,84 @@ router.get('/', async (req, res) => {
 
 // GET /sightings/species/:id: Get all sightings of a specific species.
 router.get('/species/:id', async (req, res) => {
-
+    let id = req.params.id 
+    try {
+        let sightings = await db.any("SELECT * FROM sightings WHERE species_id = $1", [id])
+        res.status(200)
+        res.json({
+            payload: sightings,
+            message: `Success. Retrieved all sightings for species with id ${id}`
+        });
+    } catch (error) {
+        res.status(500)
+        res.json({
+            message: "Error. Something went wrong!"
+        })
+        console.log(error)
+    }
 })
 
 
 // GET /sightings/researchers/:id: Get all sightings for a specific researcher.
 router.get('/researchers/:id', async (req, res) => {
-
+    let id = req.params.id 
+    try {
+        let sightings = await db.any("SELECT * FROM sightings WHERE researcher_id = $1", [id])
+        res.status(200)
+        res.json({
+            payload: sightings,
+            message: `Success. Retrieved all sightings for researcher with id ${id}`
+        });
+    } catch (error) {
+        res.status(500)
+        res.json({
+            message: "Error. Something went wrong!"
+        })
+        console.log(error)
+    }
 })
 
 
 
 // GET /sightings/habitats/:id: Get all sightings for a specific habitat.
 router.get('/habitats/:id', async (req, res) => {
-
+    let id = req.params.id 
+    try {
+        let sightings = await db.any("SELECT * FROM sightings WHERE habitat_id = $1", [id])
+        res.status(200)
+        res.json({
+            payload: sightings,
+            message: `Success. Retrieved all sightings for habitat with id ${id}`
+        });
+    } catch (error) {
+        res.status(500)
+        res.json({
+            message: "Error. Something went wrong!"
+        })
+        console.log(error)
+    }
 })
 
 
 // POST /sightings: Add new sighting.
 router.post('/', async (req, res) => {
-
+    let researcherId = req.body.researcherId
+    let speciesId = req.body.speciesId
+    let habitatId = req.body.habitatId
+    try {
+        let sighting = await db.any("INSERT INTO sightings (researcher_id, species_id, habitat_id) VALUES ($1, $2, $3) RETURNING *", [researcherId, speciesId, habitatId])
+        res.status(200)
+        res.json({
+            payload: sighting,
+            message: `Success. Inserted sighting into sightings table.`
+        });
+    } catch (error) {
+        res.status(500)
+        res.json({
+            message: "Error. Something went wrong!"
+        })
+        console.log(error)
+    }
 })
 
 
