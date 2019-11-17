@@ -78,7 +78,23 @@ router.patch('/:id', async (req, res) => {
     let name = req.body.name
     let jobTitle = req.body.jobtitle  
 
-    if (name) {
+    if (name && jobTitle) {
+        try {
+            let researcher = await db.any("UPDATE researchers SET firstname = $1, job_title = $1 WHERE id = $2 RETURNING *", [name, jobTitle, id]) // changed from 'none' to 'any' because I'm returning all rows updated
+            res.status(200)
+            res.json({
+                payload: researcher,
+                message: `Success. Updated ${name} in researchers table.`
+            });
+        } catch (error) {
+            res.status(500)
+            res.json({
+                message: "Error. Something went wrong!"
+            })
+            console.log(error)
+        }
+
+    } else if (name) {
         try {
             let researcher = await db.any("UPDATE researchers SET firstname = $1 WHERE id = $2 RETURNING *", [name, id]) // changed from 'none' to 'any' because I'm returning all rows updated
             res.status(200)
