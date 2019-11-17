@@ -20,8 +20,8 @@ const getAllSightings = async () => {
 
     data.data.payload.forEach(ele => {
         const li = `<li id='${ele.si_id}' style='text-align: center'>
-            Sightings ID: ${ele.si_id} | Species ID: ${ele.si_species_id} |
-            Researcher ID: ${ele.si_researcher_id} | Habitat ID: ${ele.si_habitat_id}
+            Sightings ID: ${ele.si_id} | Species: ${ele.sp_name} |
+            Researcher: ${ele.r_name} | Habitat: ${ele.h_category}
         </li>`;
 
         ul.innerHTML += li;
@@ -46,8 +46,8 @@ const getResearcherSightings = async () => {
 
     data.data.payload.forEach(ele => {
         const li = `<li id='${ele.si_id}' style='text-align: center'>
-            Sightings ID: ${ele.si_id} | Species ID: ${ele.si_species_id} |
-            Researcher ID: ${ele.si_researcher_id} | Habitat ID: ${ele.si_habitat_id}
+            Sightings ID: ${ele.si_id} | Species: ${ele.sp_name} |
+            Researcher: ${ele.r_name} | Habitat: ${ele.h_category}
         </li>`;
 
         ul.innerHTML += li;

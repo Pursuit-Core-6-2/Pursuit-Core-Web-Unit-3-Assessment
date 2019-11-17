@@ -7,6 +7,9 @@ Router.get('/', async (req, res) => {
     try {
         const data = await db.any(`
             SELECT * FROM sightings
+            JOIN species ON (sightings.si_species_id = species.sp_id)
+            JOIN researchers ON (sightings.si_researcher_id = researchers.r_id)
+            JOIN habitats ON (habitats.h_id = sightings.si_habitat_id)
         `)
 
         // Success
@@ -33,8 +36,7 @@ Router.get('/', async (req, res) => {
 Router.get('/species/:id', async (req, res) => {
     try {
         let id = Number(req.params.id);
-        const data = await db.any(
-            `SELECT * FROM sightings  WHERE si_species_id = $/id/`
+        const data = await db.any(`SELECT * FROM sightings`
             , { id }
         )
 
@@ -62,8 +64,13 @@ Router.get('/species/:id', async (req, res) => {
 Router.get('/researchers/:id', async (req, res) => {
     try {
         let id = Number(req.params.id);
-        const data = await db.any(
-            `SELECT * FROM sightings  WHERE si_researcher_id = $/id/`
+        const data = await db.any(`
+            SELECT * FROM sightings
+            JOIN species ON (sightings.si_species_id = species.sp_id)
+            JOIN researchers ON (sightings.si_researcher_id = researchers.r_id)
+            JOIN habitats ON (habitats.h_id = sightings.si_habitat_id)
+            WHERE sightings.si_species_id = $/id/
+        `
             , { id }
         )
 
