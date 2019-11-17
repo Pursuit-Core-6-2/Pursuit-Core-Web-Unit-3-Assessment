@@ -26,8 +26,9 @@ router.get('/', async (request, response) => {
     } catch (err) {
         console.log(err),
         response.status(500).json({
-            status: 'failed',
-            message: 'Sorry, something went wrong'
+            status: 'error',
+            message: 'Sorry, something went wrong',
+            payload: null
         })
     }
 })
@@ -50,13 +51,15 @@ router.get('/:id', async (request, response) => {
         console.log(err);
         if (err.received === 0 || err.received > 1) {
             response.status(404).json({
-                status: 'failed',
-                message: 'No habitats is identified with the provided id'
+                status: 'error',
+                message: 'No habitats is identified with the provided id',
+                payload: null
             })
         } else {
             response.status(500).json({
-                status: 'failed',
-                message: 'Sorry, something went wrong'
+                status: 'error',
+                message: 'Sorry, something went wrong',
+                payload: null
             })
         }
     }
@@ -85,8 +88,9 @@ const checkValidBody = (request, response, next) => {
         next();
     } else {
         response.status(400).json({
-            status: 'failed',
-            message: 'Missing input information'
+            status: 'error',
+            message: 'Missing input information',
+            payload: null
         })
     }
 }
@@ -106,8 +110,9 @@ const addHabitats = async (request, response) => {
     } catch (err) {
         console.log(err)
         response.status(500).json({
-            status: 'failed',
-            message: 'Sorry, something went wrong'
+            status: 'error',
+            message: 'Sorry, something went wrong',
+            payload: null
         })
     }
 }

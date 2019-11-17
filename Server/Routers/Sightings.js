@@ -31,8 +31,9 @@ router.get('/', async (request, response) => {
     } catch (err) {
         console.log(err),
         response.status(500).json({
-            status: 'failed',
-            message: 'Sorry, something went wrong'
+            status: 'error',
+            message: 'Sorry, something went wrong',
+            payload: null
         })
     }
 })
@@ -63,8 +64,9 @@ router.get('species/:id', async (request, response) => {
     } catch (err) {
         console.log(err),
         response.status(500).json({
-            status: 'failed',
-            message: 'Sorry, something went wrong'
+            status: 'error',
+            message: 'Sorry, something went wrong',
+            payload: null
         })
     }
 })
@@ -95,8 +97,9 @@ router.get('/researchers/:id', async (request, response) => {
     } catch (err) {
         console.log(err),
         response.status(500).json({
-            status: 'failed',
-            message: 'Sorry, something went wrong'
+            status: 'error',
+            message: 'Sorry, something went wrong',
+            payload: null
         })
     }
 })
@@ -127,8 +130,9 @@ router.get('/habitats/:id', async (request, response) => {
     } catch (err) {
         console.log(err),
         response.status(500).json({
-            status: 'failed',
-            message: 'Sorry, something went wrong'
+            status: 'error',
+            message: 'Sorry, something went wrong',
+            payload: null
         })
     }
 })
@@ -152,8 +156,9 @@ const checkValidBody = (request, response, next) => {
         next();
     } else {
         response.status(400).json({
-            status: 'failed',
-            message: 'Missing input information OR wrong input form'
+            status: 'error',
+            message: 'Missing input information OR wrong input form',
+            payload: null
         })
     }
 }
@@ -174,13 +179,15 @@ const addSighting = async (request, response) => {
         console.log(err)
         if (err.code === '23503') {
             response.status(400).json({
-                status: 'failed',
-                message: 'The referenced researcher / species / habitat does not exist'
+                status: 'error',
+                message: 'The referenced researcher / species / habitat does not exist',
+                payload: null
             })
         }
         response.status(500).json({
-            status: 'failed',
-            message: 'Sorry, something went wrong'
+            status: 'error',
+            message: 'Sorry, something went wrong',
+            payload: null
         })
     }
 }
@@ -202,8 +209,9 @@ const checkUpdateBody = (request, response, next) => {
         && (!habitatID || isNaN(parseInt(habitatID)) 
         || (parseInt(habitatID) + '').length !== habitatID.length)) {
             response.status(400).json({
-                status: 'failed',
-                message: 'Missing input information OR wrong input form'
+                status: 'error',
+                message: 'Missing input information OR wrong input form',
+                payload: null
         })
     } else {
         next()
@@ -315,18 +323,21 @@ const updateSighting = async (request, response) => {
         console.log(err)
         if (err.received === 0 || err.received > 1) {
             response.status(404).json({
-                status: 'failed',
-                message: 'No sighting is identified with the provided id'
+                status: 'error',
+                message: 'No sighting is identified with the provided id',
+                payload: null
             })
         } else if (err.code === '23503') {
             response.status(400).json({
-                status: 'failed',
-                message: 'The referenced researcher / species / habitat does not exist'
+                status: 'error',
+                message: 'The referenced researcher / species / habitat does not exist',
+                payload: null
             })
         } else {
             response.status(500).json({
-                status: 'failed',
-                message: 'Sorry, something went wrong'
+                status: 'error',
+                message: 'Sorry, something went wrong',
+                payload: null
             })
         }
     }
@@ -360,13 +371,15 @@ router.delete('/:id', async (request, response) => {
         console.log(err)
         if (err.received === 0) {
             response.status(404).json({
-                status: 'failed',
-                message: 'No sighting is identified with the provided id'
+                status: 'error',
+                message: 'No sighting is identified with the provided id',
+                payload: null
             })
         } else {
             response.status(500).json({
-                status: 'failed',
-                message: 'Sorry, something went wrong'
+                status: 'error',
+                message: 'Sorry, something went wrong',
+                payload: null
             })
         }
     }
