@@ -114,6 +114,7 @@ router.patch('/:staff_id', async (req, res) => {
     }
 })
 
+//Delete a researcher
 router.delete('/:staff_id', async (req, res) => {
     let staffDelete =
     `DELETE FROM researchers WHERE id = '${req.params.staff_id}'`

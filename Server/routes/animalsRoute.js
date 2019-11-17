@@ -114,4 +114,35 @@ router.patch('/:animal_id', async (req, res) => {
     }
 })
 
+//Delete a Animal
+router.delete('/:animal_id', async (req, res) => {
+    let animalDelete =
+    `DELETE FROM animals WHERE id = '${req.params.animal_id}'`
+    
+    let targetAnimal = await db.one (
+        `SELECT
+            *
+        FROM
+            animals
+        WHERE id = ${req.params.animal_id}`)
+
+    console.log(targetAnimal)
+
+    try {
+        await db.none(animalDelete)
+        res.json({
+            status: "success",
+            message: "Animal deleted",
+            payload: targetAnimal
+        })
+    } catch(error) {
+        res.status(404)
+        res.json({
+            status: "error",
+            message: 'Could not delete animal',
+            payload: null
+        })
+    }
+})
+
 module.exports = router;
