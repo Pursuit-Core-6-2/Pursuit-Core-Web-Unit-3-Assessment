@@ -37,5 +37,25 @@ router.get('/:id', async (req, res) => {
         });
     }
 });
+router.post('/', async (req, res) => {
+    let newAnimal = req.body;
+    try {
+        let insertQuery = `INSERT INTO animals(species_id, nickname)
+            VALUES($1, $2)`
+        await db.none(insertQuery, [newAnimal.species_id, newAnimal.nickname]);
+        res.json({
+            status: 'Success',
+            message: "New Animal created",
+            payload: newAnimal
+        })
+    }
+    catch (error) {
+        res.json({
+            status: 'Error',
+            message: 'Error posting new animal',
+            payload: null
+        });
+    }
+});
 
 module.exports = router;
