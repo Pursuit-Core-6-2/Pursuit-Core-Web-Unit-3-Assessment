@@ -71,7 +71,7 @@ router.get('/:id', async (request, response) => {
 })
 
 
-//FUNCTION TO FORMAT species_idS AND JOB TITLES
+//FUNCTION TO FORMAT species_idS AND JOB nicknameS
 const formatStringInputs = (str) => {
     str = str.trim()
     const arr = str.split(' ')
@@ -136,6 +136,122 @@ const addAnimal = async (request, response) => {
 router.post('/', checkValidBody, addAnimal)
 
 
+//
+const checkUpdateBody = (request, response, next) => {
+    const speciesID = request.body.species_id;
+    const nickname = request.body.nickname;
+
+    if ((!speciesID || isNaN(parseInt(speciesID)) 
+        || (parseInt(speciesID) + '').length !== speciesID.length)
+        && !nickname) {
+        response.status(400).json({
+            status: 'failed',
+            message: 'Missing input information OR wrong input form'
+        })
+    } else {
+        next()
+    }
+}
+
+const updateAnimal = async (request, response) => {
+    const animalID = request.params.id;
+    let requestQuery = '';
+    let requestArray = [];
+
+    if (request.body.species_id && request.body.nickname) {
+        const speciesID = parseInt(request.body.species_id);
+        const nickname = formatStringInputs(request.body.nickname);
+        requestQuery = `
+            UPDATE animals 
+            SET species_id = $2, nickname = $3
+            WHERE id = $1
+            RETURNING id, species_id, nickname
+        `;
+        requestArray = [animalID, speciesID, nickname];
+
+    } else if (request.body.species_id) {
+        const speciesID = parseInt(request.body.species_id);
+        requestQuery = `
+            UPDATE animals 
+            SET species_id = $2
+            WHERE id = $1
+            RETURNING id, species_id, nickname
+        `;
+        requestArray = [animalID, speciesID];
+
+    } else if (request.body.nickname) {
+        const nickname = formatStringInputs(request.body.nickname);
+        requestQuery = `
+            UPDATE animals 
+            SET nickname = $2
+            WHERE id = $1
+            RETURNING id, species_id, nickname
+        `;
+        requestArray = [animalID, nickname];
+    }
+
+    try {
+        const updatedAnimal = await db.one(requestQuery, requestArray)
+        response.json({
+            status: 'success',
+            message: `Updated animal with id: ${animalID}`,
+            payload: updatedAnimal
+        })
+    } catch (err) {
+        console.log(err)
+        if (err.received === 0 || err.received > 1) {
+            response.status(404).json({
+                status: 'failed',
+                message: 'No animal is identified with the provided id'
+            })
+        } else {
+            response.status(500).json({
+                status: 'failed',
+                message: 'Sorry, something went wrong'
+            })
+        }
+    }
+}
+
+//PATCH /animals/:id: Update single animal.
+router.patch('/:id', checkUpdateBody, updateAnimal);
+
+
+//DELETE /animals/:id: Delete single animal.
+router.delete('/:id', async (request, response) => {
+    const animalID = request.params.id;
+    // IF IT WAS A REAL DELETE QUE QUERY WILL BE LIKE:
+    // DELETE FROM animals WHERE id = $1
+    const requestQuery = `
+        UPDATE animals 
+        SET available = false
+        WHERE id = $1
+        RETURNING id, species_id, nickname
+        `;
+
+    try {
+        const deletedAnimal = await db.one(requestQuery, animalID)
+        response.json({
+            status: 'success',
+            message: `Deleted animal with id: ${animalID}`,
+            payload: deletedAnimal
+        })
+
+    } catch (err) {
+        console.log(err)
+        if (err.received === 0 || err.received > 1) {
+            response.status(404).json({
+                status: 'failed',
+                message: 'No animal is identified with the provided id'
+            })
+        } else {
+            response.status(500).json({
+                status: 'failed',
+                message: 'Sorry, something went wrong'
+            })
+        }
+    }
+})
 
 
 module.exports = router;
