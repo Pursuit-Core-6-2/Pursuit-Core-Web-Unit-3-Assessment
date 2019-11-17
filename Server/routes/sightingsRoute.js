@@ -29,4 +29,28 @@ router.get('/', async (req, res) => {
     }
 })
 
+//Report new sighting
+router.post('/', async (req, res) => {
+    let addNewSighting =
+    `INSERT INTO sightings(researcher_id, species_id, habitats_id)
+        VALUES($1, $2, $3)`
+    
+    try {
+        await db.none(addNewSighting, [req.body.researcher_id, req.body.species_id, req.body.habitats_id])
+        res.json({
+            status: "success",
+            message: "Made a new sighting",
+            payload: req.body
+        })
+    } catch(error) {
+        res.status(404)
+        console.log(error);
+        res.json({
+            status: "error",
+            message: "Could not create a new sighting",
+            payload: null
+        })
+    }
+})
+
 module.exports = router;
