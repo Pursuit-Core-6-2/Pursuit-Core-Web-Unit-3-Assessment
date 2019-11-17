@@ -41,4 +41,23 @@ router.get('/:id', async(req, res)=>{
 })
 
 
+//deletes animal
+router.delete('/:id', async (req, res) => {
+    let id = req.params.id
+    try {
+        let deletedAnimal = await db.none(`DELETE FROM animals WHERE id = ${id}`)
+        res.json({
+            status: "Success",
+            message: `Animal ${id} was deleted`,
+            payload: deletedAnimal
+
+
+        })
+    } catch (error){
+        res.json({
+            status: 'error',
+            message: null
+        })
+    }
+})
 module.exports = router; 

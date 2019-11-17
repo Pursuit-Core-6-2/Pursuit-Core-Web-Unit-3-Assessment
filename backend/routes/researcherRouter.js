@@ -67,14 +67,17 @@ router.post('/', async (req, res)=>{
     }
 })
 
+//updates researcher information
 router.patch('/:id', async(req, res) =>{
     let id = Number(req.params.id)
+    let name = req.body.name
+    let job_title = req.body.job_title
+
     let updateQuery =  `UPDATE researchers 
     SET name = $1, job_title = $2 
     WHERE id = $3;`
    
-    let name = req.body.name
-    let job_title = req.body.job_title
+   
 
     let body = {
         name : name,
@@ -82,7 +85,7 @@ router.patch('/:id', async(req, res) =>{
     }
 
     try{
-        await db.any(updateQuery,[name, job_title])
+        await db.any(updateQuery,[name, job_title, id])
         res.json({
             status : 'success',  
             message: 'Researcher has been updated',
@@ -96,4 +99,26 @@ router.patch('/:id', async(req, res) =>{
     }
 
 })
+
+
+//deletes researcher
+router.delete('/:id', async (req, res) => {
+    let id = req.params.id
+    try {
+        let deletedResearcher = await db.none(`DELETE FROM researchers WHERE id = ${id}`)
+        res.json({
+            status: "Success",
+            message: `Researcher ${id} was deleted`,
+            payload: deletedResearcher
+
+
+        })
+    } catch (error){
+        res.json({
+            status: 'error',
+            message: null
+        })
+    }
+})
+
 module.exports = router ;
