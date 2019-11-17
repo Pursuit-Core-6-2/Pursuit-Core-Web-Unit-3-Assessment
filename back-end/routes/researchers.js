@@ -43,7 +43,7 @@ router.get('/:id', async (req,res) =>{
     }
 })
 
-//Add a new researcher
+//Adds a new researcher
 router.post('', async (req,res) =>{ 
     try{
         const name = req.body.name
@@ -74,12 +74,12 @@ router.post('', async (req,res) =>{
     }
 })
 
-//Update a reseaercher
+//Updates a reseaercher
 router.patch('/:id', async (req, res) => {
     try{
-        let id = req.params.id
-        let name = req.body.name
-        let job_title = req.body.job
+        const id = req.params.id
+        const name = req.body.name
+        const job_title = req.body.job
         if(!name && !job_title){
             res.json({
                 status : 'error',
@@ -107,13 +107,13 @@ router.patch('/:id', async (req, res) => {
         console.log(error)
         res.send({
             status: 'error',
-            message: 'could not update user',
+            message: 'could not update reseacher',
             payload: null
          })
     }
 })
 
-//Delete a researcher
+//Deletes a researcher
 router.delete('/:id', async (req, res) => {
     try {
         let id = req.params.id

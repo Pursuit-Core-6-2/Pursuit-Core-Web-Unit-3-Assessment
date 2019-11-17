@@ -43,7 +43,7 @@ router.get('/:id', async (req,res) =>{
     }
 })
 
-//Add a new species
+//Adds a new species
 router.post('', async (req,res) =>{ 
     try{
         const name = req.body.name
