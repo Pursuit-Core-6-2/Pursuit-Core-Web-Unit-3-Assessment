@@ -10,10 +10,11 @@ app.use(express.json());
 // Routers
 const researcherRouter = require('./routes/researchersRoute');
 const speciesRouter = require('./routes/speciesRoute');
-
+const animalsRouter = require('./routes/animalsRoute');
 
 app.use('/researchers', researcherRouter);
 app.use('/species', speciesRouter);
+app.use('/animals', animalsRouter)
 app.use('/', (req, res) => res.send('Welcome to the Marine Bio Search Team'));
 
 
