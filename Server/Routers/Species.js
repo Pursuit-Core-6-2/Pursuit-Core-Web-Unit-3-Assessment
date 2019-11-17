@@ -4,12 +4,6 @@ const router = express.Router();
 const db = require('../../Database/database');
 
 
-/*
-GET /species: Get all species.
-GET /species/:id: Get single species.
-POST /species: Add new species.
-*/
-
 //GET /species: Get all species.
 router.get('/', async (request, response) => {
     const requestQuery = `
