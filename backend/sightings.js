@@ -36,7 +36,8 @@ router.get('/species/:id', async (req, res) => {
         })
         }
     })
-    
+
+
     router.get('/researchers/:id', async (req, res) => {
             try{
           let getResearchersSightings = await db.one(`SELECT s.id sightings, 
@@ -118,5 +119,28 @@ router.delete('/:id', async(req, res) => {
         })
     }
 })
+
+
+// ------------------------
+
+router.get('/allSightings', async (req, res) => {
+        try{
+      let sightings = await db.any(`SELECT s.id sightings, r.name researchers, sp.name species, h.category habitats
+      FROM sightings s 
+      INNER JOIN researchers r ON s.researcher_id = r.id 
+      INNER JOIN species sp ON s.species_id = sp.id
+      INNER JOIN habitats h ON s.habitat_id = h.id`);
+        res.json({
+            "status": "success",
+            "message": "retrived",
+            "payload": sightings,
+        })
+    }catch (error) {
+        console.log(error);
+        res.json({
+            message: error
+        })
+        }
+    })
 
 module.exports = router
