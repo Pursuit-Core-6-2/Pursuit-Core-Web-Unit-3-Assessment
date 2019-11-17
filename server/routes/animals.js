@@ -103,7 +103,6 @@ router.patch('/:id', async (req, res, next) => {
 
 router.delete("/:id", async (req, res) => {
     try {
-
         let selectQuery = `SELECT * FROM animals WHERE id = $1`
         let singleAnimal = await db.any(selectQuery, parseInt(req.params.id))
         console.log(singleAnimal.length)

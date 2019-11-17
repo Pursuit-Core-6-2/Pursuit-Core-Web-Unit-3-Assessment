@@ -10,13 +10,16 @@ const db = pgp(connectString);
 router.get("/", async (req, res, next) => {
     try {
         let response = await db.any("SELECT * FROM sightings;");
+        // let response = await db.any("SELECT sightings.*,researchers.name, species.name, habitats.catergory FROM sightings INNER JOIN species ON sightings.species_id = species.id INNER JOIN researchers ON sightings.researcher_ID = researchers.id ")
+        console.log(response)
+
+
         res.json({
             status: "success",
             message: "retrieved all the  sightings",
             payload: response
         });
     } catch (error) {
-        log(error);
         res.status(500).json({
             status: "error",
             message: "Error: Something went wrong",
@@ -27,15 +30,21 @@ router.get("/", async (req, res, next) => {
 
 
 router.get("/species/:id", async (req, res, next) => {
+    // SELECT sightings.id, sightings.researcher_id, sightings.species_id, sightings.habitat_id, species.name AS species FROM sightings JOIN species ON species.id=sightings.species_id WHERE species.id= 2;
     try {
         let selectQuery = `SELECT * FROM sightings WHERE species_id = $1`
         let user = await db.any(selectQuery, parseInt(req.params.id))
-
-        res.json({
-            status: "success",
-            message: `retrieved single species`,
-            payload: user
-        });
+   if(user.length === 0) {
+       return error;
+    
+   }else{
+    res.json({
+        status: "success",
+        message: `retrieved single species`,
+        payload: user
+    });
+   }
+       
     } catch (error) {
         res.json({
             "status": "error",
@@ -53,12 +62,16 @@ router.get("/researchers/:id", async (req, res, next) => {
     try {
         let selectQuery = `SELECT * FROM sightings WHERE researcher_ID = $1`
         let user = await db.any(selectQuery, parseInt(req.params.id))
+        if(user.length === 0){
+            return error;
+        }else{
+            res.json({
+                status: "success",
+                message: `retrieved single species`,
+                payload: user
+            });
+        }
 
-        res.json({
-            status: "success",
-            message: `retrieved single species`,
-            payload: user
-        });
     } catch (error) {
         res.json({
             "status": "error",
@@ -78,11 +91,16 @@ router.get("/habitats/:id", async (req, res, next) => {
         let selectQuery = `SELECT * FROM sightings WHERE habitat_id = $1`
         let user = await db.any(selectQuery, parseInt(req.params.id))
 
-        res.json({
-            status: "success",
-            message: `retrieved single species`,
-            payload: user
-        });
+        if(user.length === 0) {
+            return error;
+        }else{
+            res.json({
+                status: "success",
+                message: `retrieved single species`,
+                payload: user
+            });
+        }
+       
     } catch (error) {
         res.json({
             "status": "error",
@@ -104,14 +122,14 @@ router.post("/", async (req, res) => {
     try {
         let insertQuery = `INSERT INTO sightings(researcher_ID, species_id, habitat_id) 
         VALUES($1,$2,$3);`
-        await db.none(insertQuery, [req.body.researcher_ID, req.body.species_id,req.body.habitat_id])
+        await db.none(insertQuery, [parseInt(req.body.researcher_ID), parseInt(req.body.species_id),parseInt(req.body.habitat_id)])
         res.json({
             body: req.body,
             message: `Added a new sighting`
         });
     } catch (error) {
         res.json({
-            message: `There was an error!`
+            message: `Did not add a new sighting`
         });
     }
 })
@@ -120,13 +138,23 @@ router.post("/", async (req, res) => {
 
 router.delete("/:id", async (req, res) => {
     try {
+
+        let selectQuery = `SELECT * FROM sightings WHERE id = $1`
+                let user = await db.any(selectQuery, parseInt(req.params.id))
+       
+      if(user.length === 1){
         let deleteQuery = `DELETE FROM sightings WHERE id = $1;`
         await db.none(deleteQuery, parseInt(req.params.id));
         res.json({
             status: "success",
             message: `Removed a sighting`,
-            payload: req.body
+            payload: user
         });
+      }else{
+return error;
+      
+        
+    }
     } catch (error) {
         res.json({
             status: "error",
@@ -137,24 +165,24 @@ router.delete("/:id", async (req, res) => {
 
 
 
-router.get("/:id", async (req, res) => {
-    try {
-        let selectQuery = `SELECT * FROM sightings WHERE id = $1`
-        let user = await db.any(selectQuery, parseInt(req.params.id))
+// router.get("/:id", async (req, res) => {
+//     try {
+//         let selectQuery = `SELECT * FROM sightings WHERE id = $1`
+//         let user = await db.any(selectQuery, parseInt(req.params.id))
 
-        res.json({
-            status: "success",
-            message: `retrieved single sighting`,
-            payload: user
-        });
-    } catch (error) {
-        res.json({
-            "status": "error",
-            "message": "sighting not found",
-            "payload": null
-        });
-    }
-})
+//         res.json({
+//             status: "success",
+//             message: `retrieved single sighting`,
+//             payload: user
+//         });
+//     } catch (error) {
+//         res.json({
+//             "status": "error",
+//             "message": "sighting not found",
+//             "payload": null
+//         });
+//     }
+// })
 
 
 

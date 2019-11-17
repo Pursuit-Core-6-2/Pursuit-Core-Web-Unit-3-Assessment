@@ -28,9 +28,17 @@ router.get("/", async (req, res, next) => {
 router.get("/:id", async (req, res) => {
     try {
 
-        let selectQuery = `SELECT * FROM researchers WHERE id = $1`
+        // let selectQuery = `SELECT * FROM researchers WHERE id = $1`
+
+        let selectQuery =  `SELECT researchers.name, species.name, habitats.catergory FROM sightings 
+        INNER JOIN species ON sightings.species_id = species.id 
+        INNER JOIN researchers ON sightings.researcher_ID = researchers.id
+        INNER JOIN habitats ON sightings.habitat_id = habitats.id
+        WHERE researchers.id=  $1` ;
+
+
         let singleResearcher = await db.any(selectQuery, parseInt(req.params.id))
-        if (singleResearcher.length === 1) {
+        if (singleResearcher.length >0) {
             res.json({
                 status: "success",
                 message: `Here is a single researcher!`,

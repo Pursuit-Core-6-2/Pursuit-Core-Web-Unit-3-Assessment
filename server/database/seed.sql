@@ -79,10 +79,29 @@ VALUES(4, 4, 4 ),
 (5,2,1);
 
 
-SELECT * FROM researchers;
-SELECT * FROM species;
-SELECT * FROM animals;
-SELECT * FROM habitats;
-SELECT * FROM sightings;
+-- SELECT * FROM researchers;
+-- SELECT * FROM species;
+-- SELECT * FROM animals;
+-- SELECT * FROM habitats;
+-- SELECT * FROM sightings;
+
+SELECT researchers.name, species.name, habitats.catergory FROM sightings 
+INNER JOIN species ON sightings.species_id = species.id 
+INNER JOIN researchers ON sightings.researcher_ID = researchers.id
+INNER JOIN habitats ON sightings.habitat_id = habitats.id
+WHERE researchers.name=  'Ezra Flip'  ;
+-- SELECT species.name, habitats.catergory  FROM sightings JOIN species ON species.id=sightings.species_id 
+-- -- FROM sightings JOIN researchers  ON researcher.id = sightings.researcher_ID
 
 
+-- WHERE species.id= 2;
+
+
+-- SELECT  researchers.name, habitats.category  FROM sightings JOIN researchers ON researchers.id=sightings.researcher_id JOIN habitats ON habitats.id=sightings.habitat_id WHERE researchers.id= 2;
+
+--  researcher_ID INT REFERENCES researchers(id) ON DELETE SET NULL,
+
+-- `SELECT * FROM users 
+--     INNER JOIN user_holds ON users.user_id = user_holds.holds_user_id 
+--     INNER JOIN holds ON user_holds.holds_hold_id = holds.hold_id 
+--     WHERE holds.hold_id = $1;`
