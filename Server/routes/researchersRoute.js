@@ -56,4 +56,25 @@ router.get('/:staff_id', async (req, res) => {
     }
 })
 
+router.post('/', async (req, res) => {
+    let addNewStaff =
+    `INSERT INTO researchers(name, job_title)
+        VALUES($1, $2)`
+    
+    try {
+        await db.none(addNewStaff, [req.body.name, req.body.job_title])
+        res.json({
+            status: "success",
+            message: "retrieved single researcher",
+            payload: req.body
+        })
+    } catch(error) {
+        res.json({
+            status: "error",
+            message: "researcher not found",
+            payload: null
+        })
+    }
+})
+
 module.exports = router;
