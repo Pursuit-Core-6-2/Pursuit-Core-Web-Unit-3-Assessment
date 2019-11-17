@@ -63,7 +63,7 @@ router.post('/', async (request, response) => {
     try {
         let researcherInfo = {
             name: name,
-            job_title: title
+            job_title: job_title
         };
 
         let createResearcher = `INSERT INTO researchers (name, job_title)
@@ -93,17 +93,17 @@ router.patch('/:id', async (request, response) => {
     console.log('currently running');
 
     let id = request.params.id;
-    let newName = request.body.name;
-    let newTitle = request.body.job_title;
+    let name = request.body.name;
+    let job_title = request.body.job_title;
 
     try {
         let patchInfo = {
-            name: newName,
-            title: newTitle
+            newName: name,
+            newTitle: job_title
         }
 
         let patchQuery = `UPDATE researchers SET name = $1, job_title = $2 WHERE id = $3`
-        await db.none(patchQuery, [newName, newTitle, id]);
+        await db.none(patchQuery, [name, job_title, id]);
 
         response.json({
             status: 'success',
