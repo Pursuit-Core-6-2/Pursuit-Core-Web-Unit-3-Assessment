@@ -1,0 +1,50 @@
+html {
+    height: 100%;
+    width: 100%;
+    background-image: url('../gettyimages.jpg');
+    background-size: cover;
+    opacity: 20;
+}
+body {
+    width: 60%;
+    height: 100%;
+    padding: 20px;
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+    background-color: bisque;
+    border-radius: 20px;
+}
+
+h1 {
+    text-align: center;
+}
+
+#getAllSights {
+    display: block;
+    margin: 0 auto;
+}
+
+#feedback {
+    position: fixed;
+    top: 20%;
+    background-color: rgba(255, 127, 80, 0.637);
+    width: 40%;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#feedback div {
+    padding: 5px;
+    border: solid, black, 2px;
+    border-radius: 5px;
+    color: white;
+    background-color: red;
+    display: inline;
+    
+
+}
+
+li {
+    margin-bottom: 15px;
+}
