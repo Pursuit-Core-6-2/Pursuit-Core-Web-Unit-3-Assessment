@@ -17,7 +17,7 @@ router.get('', async (req,res) =>{
         res.json({
             status : 'error',
             message: 'research team not found',
-            payload: err
+            payload: null
         })
     }
 })
@@ -37,8 +37,8 @@ router.get('/:id', async (req,res) =>{
     }catch(err){
         res.json({
             status : 'error',
-            message: 'researcher team not found',
-            payload: err
+            message: 'researcher not found',
+            payload: null
         })
     }
 })
@@ -47,26 +47,92 @@ router.get('/:id', async (req,res) =>{
 router.post('', async (req,res) =>{ 
     try{
         const name = req.body.name
+        const job = req.body.job
         const insert_query = 
         `INSERT into researchers(full_name, job_title) VALUES
         ($1, $2)`
+
+        if(!req.body.name && !req.body.job){
+            res.json({
+                status : 'error',
+                message: "information missing"
+            })
+        }else{
+            await db.none(insert_query, [req.body.name, req.body.job]);   
+        }
         res.json({
             status : 'success',
             message : 'added single researcher',
-            payload : {
-                'researcher': researcher
-            }
+
         })
     }catch(err){
+        console.log(err);
         res.json({
             status : 'error',
-            message: 'researcher team not found',
-            payload: err
+            message: 'researcher not added',
+            payload: null
         })
     }
 })
 
+//Update a reseaercher
+router.patch('/:id', async (req, res) => {
+    try{
+        let id = req.params.id
+        let name = req.body.name
+        let job_title = req.body.job
+        if(!name && !job_title){
+            res.json({
+                status : 'error',
+                message : 'missing info'
+            })
+        }else if(name && job_title){
+            res.json({
+                status : 'error',
+                message : 'you can only updtate one value at a time'
+            })
+        }else if(name){
+            await db.none( `UPDATE researchers SET full_name = '${name}' WHERE id =${id}`)
+            res.json({
+                status : 'success',
+                message : `updated researcher with id ${id}`
+            })
+        }else if(job_title){
+            await db.none( `UPDATE researchers SET  job_title = '${job_title}' WHERE id =${id}`)
+            res.json({
+                status : 'success',
+                message : `updated researcher with id ${id}`
+            })
+        }
+    }catch(error){
+        console.log(error)
+        res.send({
+            status: 'error',
+            message: 'could not update user',
+            payload: null
+         })
+    }
+})
 
+//Delete a researcher
+router.delete('/:id', async (req, res) => {
+    try {
+        let id = req.params.id
+        await db.none(`delete from researchers where id = ${id}`);
+        
+        res.json({
+            status: "success",
+            message: "deleted researcher",
+        })
+    }catch (error) {
+        console.log(error);
+        
+        res.json({
+            status : 'error',
+            message: 'could not delete researcher'
+        })
+    }
+})
 
 //Export
 module.exports = router
