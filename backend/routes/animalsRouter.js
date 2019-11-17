@@ -40,6 +40,62 @@ router.get('/:id', async(req, res)=>{
     }
 })
 
+//post a new animal
+router.post('/', async (req, res)=>{
+    let insertQuery =  `INSERT INTO animals(species_id, nickname)
+    VALUES($1, $2);`
+
+    let species_id = req.body.species_id
+    let nickname = req.body.nickname
+
+    let body = {
+        species_id : species_id,
+        nickname: nickname
+    }
+
+    try{
+        await db.none(insertQuery,[species_id, nickname])
+        res.json({
+            status : 'success',  
+            message: 'Animal has been added',
+            payload: body
+        })
+    } catch (error) {
+        res.json({
+            status: "error",
+            message: null
+        })
+    }
+})
+
+router.patch('/:id', async (req, res) =>{
+    let id = Number(req.params.id)
+    let species_id = req.body.species_id
+    let nickname = req.body.nickname
+    let updateQuery = `UPDATE animals 
+    SET nickname = $1 , species_id = $2
+    WHERE id = $3 ;`
+
+    let updatedAnimal = {
+        species_id:species_id,
+        nickname:nickname
+    }
+
+    try{
+        await db.any(updateQuery, [species_id, nickname, id])
+        res.json({
+            status: 'Success',
+            message: 'Animal has been updated',
+            payload: updatedAnimal
+        })
+    } catch (error) {
+        res.json({
+            status: "error",
+            message: "unable to update animal", 
+            payload: null
+        })
+    }
+})
 
 //deletes animal
 router.delete('/:id', async (req, res) => {
@@ -50,8 +106,6 @@ router.delete('/:id', async (req, res) => {
             status: "Success",
             message: `Animal ${id} was deleted`,
             payload: deletedAnimal
-
-
         })
     } catch (error){
         res.json({
@@ -60,4 +114,5 @@ router.delete('/:id', async (req, res) => {
         })
     }
 })
+
 module.exports = router; 
