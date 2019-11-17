@@ -20,7 +20,7 @@ app.use('/researchers', researcherRouter);
 app.use('/species', speciesRouter);
 app.use('/animals', animalsRouter);
 app.use('/habitats', habitatsRouter);
-// app.use('/sightings', sightingsRouter);
+app.use('/sightings', sightingsRouter);
 
 
 app.listen(port, () => {
