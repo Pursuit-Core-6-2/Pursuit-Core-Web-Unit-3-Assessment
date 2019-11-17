@@ -95,6 +95,13 @@ router.post('/', async (req, res) => {
     let researcherId = req.body.researcherId
     let speciesId = req.body.speciesId
     let habitatId = req.body.habitatId
+
+    if (!researcherId || !speciesId || habitatId) {
+        res.status(500)
+        res.json({
+            message: "Please enter all information."
+        });     
+    } else {
     try {
         let sighting = await db.any("INSERT INTO sightings (researcher_id, species_id, habitat_id) VALUES ($1, $2, $3) RETURNING *", [researcherId, speciesId, habitatId])
         res.status(200)
@@ -109,6 +116,7 @@ router.post('/', async (req, res) => {
         })
         console.log(error)
     }
+  }
 })
 
 
