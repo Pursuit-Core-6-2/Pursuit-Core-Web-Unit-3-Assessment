@@ -56,4 +56,27 @@ router.get('/:animal_id', async (req, res) => {
     }
 })
 
+//create new animal info
+router.post('/', async (req, res) => {
+    let addNewAnimal =
+    `INSERT INTO animals(species_id, nickname)
+        VALUES($1, $2)`
+    
+    try {
+        await db.none(addNewAnimal, [req.body.species_id, req.body.nickname])
+        res.json({
+            status: "success",
+            message: "Added new animal",
+            payload: req.body
+        })
+    } catch(error) {
+        res.status(404)
+        res.json({
+            status: "error",
+            message: "Could not add animal",
+            payload: null
+        })
+    }
+})
+
 module.exports = router;
