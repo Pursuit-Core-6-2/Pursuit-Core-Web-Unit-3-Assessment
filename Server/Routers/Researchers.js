@@ -216,7 +216,7 @@ router.delete('/:id', async (request, response) => {
 
     } catch (err) {
         console.log(err)
-        if (err.received === 0 || err.received > 1) {
+        if (err.received === 0) {
             response.status(404).json({
                 status: 'failed',
                 message: 'No researcher is identified with the provided id'

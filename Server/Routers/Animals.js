@@ -88,7 +88,7 @@ const formatStringInputs = (str) => {
 }
 
 const checkValidBody = (request, response, next) => {
-    const speciesID = request.body.species_id;
+    const speciesID = request.body.speciesID;
     const nickname = request.body.nickname;
 
     if (speciesID && !isNaN(parseInt(speciesID)) 
@@ -138,7 +138,7 @@ router.post('/', checkValidBody, addAnimal)
 
 //
 const checkUpdateBody = (request, response, next) => {
-    const speciesID = request.body.species_id;
+    const speciesID = request.body.speciesID;
     const nickname = request.body.nickname;
 
     if ((!speciesID || isNaN(parseInt(speciesID)) 
@@ -158,8 +158,8 @@ const updateAnimal = async (request, response) => {
     let requestQuery = '';
     let requestArray = [];
 
-    if (request.body.species_id && request.body.nickname) {
-        const speciesID = parseInt(request.body.species_id);
+    if (request.body.speciesID && request.body.nickname) {
+        const speciesID = parseInt(request.body.speciesID);
         const nickname = formatStringInputs(request.body.nickname);
         requestQuery = `
             UPDATE animals 
@@ -169,8 +169,8 @@ const updateAnimal = async (request, response) => {
         `;
         requestArray = [animalID, speciesID, nickname];
 
-    } else if (request.body.species_id) {
-        const speciesID = parseInt(request.body.species_id);
+    } else if (request.body.speciesID) {
+        const speciesID = parseInt(request.body.speciesID);
         requestQuery = `
             UPDATE animals 
             SET species_id = $2
@@ -239,7 +239,7 @@ router.delete('/:id', async (request, response) => {
 
     } catch (err) {
         console.log(err)
-        if (err.received === 0 || err.received > 1) {
+        if (err.received === 0) {
             response.status(404).json({
                 status: 'failed',
                 message: 'No animal is identified with the provided id'
