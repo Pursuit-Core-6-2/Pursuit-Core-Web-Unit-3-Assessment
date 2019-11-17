@@ -11,5 +11,7 @@ app.use(express.json());
 const researcherRouter = require('./routes/researchersRoute');
 
 app.use('/researchers', researcherRouter);
+app.use('/', (req, res) => res.send('Welcome to the Marine Bio Search Team'));
+
 
 app.listen(port, () => console.log(`Server Active on http://localhost:${port}`));
