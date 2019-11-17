@@ -165,3 +165,12 @@ router.delete('/:sighting_id', async (req, res) => {
 
 
 module.exports = router;
+
+
+// console.log(response);
+// payload = response.data.payload;
+// console.log(payload);
+
+// let listSighting = document.createElement("li");
+// listSighting.innerText = `Sighting ID: ${payload.id}, Name: ${payload.name}, Species ID: ${payload.species_id}, Habitat ID: ${payload.habitats_id}`;
+// researcherSightList.appendChild(listSighting);
