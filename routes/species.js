@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const db = require('../db');
+const db = require('../db/db');
 
 // Get all Species from database
 router.get('/', async (request, response) => {

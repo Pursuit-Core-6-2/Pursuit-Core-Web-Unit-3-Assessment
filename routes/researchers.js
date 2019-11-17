@@ -1,8 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const db = require('../db');
+const db = require('../db/db');
 
-// Get all researchers from database
+// Get all Researchers from database
 router.get('/', async (request, response) => {
     console.log('currently running');
 
@@ -108,7 +108,9 @@ router.patch('/:id', async (request, response) => {
         response.json({
             status: 'success',
             message: 'Researcher sucessfully patched.',
-            payload: patchInfo
+            payload: {
+                patchInfo: patchInfo
+            }
         })
     } catch (error) {
         console.log(error);
@@ -120,7 +122,7 @@ router.patch('/:id', async (request, response) => {
     }
 });
 
-// Delete a single researcher from database
+// Delete selected researcher from database
 router.delete('/:id', async (request, response) => {
     console.log('currently running');
 
