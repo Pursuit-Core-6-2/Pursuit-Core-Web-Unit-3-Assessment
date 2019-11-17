@@ -37,7 +37,7 @@ router.get('/species/:species_name', async (req, res) => {
         SELECT 
            species.name, species.is_mammal, sightings.researcher_id
         FROM species
-        INNER JOIN sightings ON  sightings.id = species.id
+        INNER JOIN sightings ON  sightings.species_id = species.id
         WHERE species.name = '${req.params.species_name}'
         `)
         res.json({
