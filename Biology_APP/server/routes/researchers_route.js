@@ -68,18 +68,18 @@ router.patch("/:id",async(req,res)=>{
             let data;
             if (req.body.name && req.body.job_title) {
                 data = await db.one(
-                    `UPDATE researchers SET name = $/name/, job_title = $/job_title/ WHERE id = $/id/ RETURNING *`, 
+                    `UPDATE researchers SET name = $/name/, job_title = $/job_title/ WHERE id = $/id/ `, 
                     {id: req.params.id, name: req.body.name, job_title: req.body.job_title}
                 )
                 
             } else if (req.body.job_title) {
                 data = await db.one(
-                    `UPDATE researchers SET job_title = $/job_title/ WHERE id = $/id/ RETURNING *`, 
+                    `UPDATE researchers SET job_title = $/job_title/ WHERE id = $/id/ `, 
                     {id: req.params.id, job_title: req.body.job_title}
                 )
             } else {
                 data = await db.one(
-                    `UPDATE researchers SET name = $/name/ WHERE id = $/id/ RETURNING *`, 
+                    `UPDATE researchers SET name = $/name/ WHERE id = $/id/`, 
                     {id: req.params.id, name: req.body.name}
                 )
             }
