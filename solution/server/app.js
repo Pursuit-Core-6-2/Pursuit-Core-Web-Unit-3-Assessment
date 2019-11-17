@@ -6,7 +6,8 @@ const bodyParser = require('body-parser');
 const researchersRouter = require('./routes/researchers.js');
 const speciesRouter = require('./routes/species.js');
 const animalsRouter = require('./routes/animals.js');
-const habitatsRouter = require('./routes/habitats.js')
+const habitatsRouter = require('./routes/habitats.js');
+const sightingsRouter = require('./routes/sightings.js');
 
 
 app.use(cors());
@@ -21,3 +22,5 @@ app.use('/researchers', researchersRouter);
 app.use('/species', speciesRouter);
 app.use('/animals', animalsRouter);
 app.use('/habitats', habitatsRouter);
+app.use('/sightings', sightingsRouter);
+
