@@ -67,14 +67,30 @@ router.delete('/:id', async(req, res) =>{
    })
 
 //sightings from specific researcher
-router.get(':id/researchers/:researcher_id', async (req,res) => {
+router.get('/researchers/:id', async (req,res) => {
    let id = Number (req.params.id);
-   let researchers_id = Number (req.params.researcher_id);
+   
    try{
-      let sightings = await db.one(`SELECT * FROM sightings WHERE researchers (id) = ${researchers_id}`)
+      let sightings = await db.any(`SELECT * FROM sightings WHERE researcher_id = ${id}`)
       res.json({
          payload: sightings,
          message: `Success. Retrieved all logged sightings for researcher ${id}.`
+     })
+   } catch (error) {
+      console.log(error)
+      res.json({
+          message: "Something went wrong."
+      })
+   }
+})
+
+router.get('/species/:id', async (req,res) => {
+   let id = Number (req.params.id);
+   try{
+      let sightings = await db.any(`SELECT * FROM sightings WHERE species_id = ${id}`)
+      res.json({
+         payload: sightings,
+         message: `Success. Retrieved all logged sightings for species ${id}.`
      })
    } catch (error) {
       console.log(error)
