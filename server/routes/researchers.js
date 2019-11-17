@@ -49,7 +49,7 @@ router.post('/', async (req, res) => {
     let name = req.body.name
     let isMammal = req.body.jobtitle  
     try {
-        let researcher = await db.any("INSERT INTO researchers (name, job_title) VALUES ($1, $2) RETURNING *", [name, jobTitle])
+        let researcher = await db.any("INSERT INTO researchers (firstname, job_title) VALUES ($1, $2) RETURNING *", [name, jobTitle])
         res.status(200)
         res.json({
             payload: researcher,
@@ -71,7 +71,7 @@ router.patch('/:id', async (req, res) => {
     let name = req.body.name
     let jobTitle = req.body.jobtitle  
     try {
-        let researcher = await db.any("UPDATE researchers SET name = $1, job_title = $2 WHERE id = $3 RETURNING *", [name, jobTitle, id]) // changed from 'none' to 'any' because I'm returning all rows updated
+        let researcher = await db.any("UPDATE researchers SET firstname = $1, job_title = $2 WHERE id = $3 RETURNING *", [name, jobTitle, id]) // changed from 'none' to 'any' because I'm returning all rows updated
         res.status(200)
         res.json({
             payload: researcher,

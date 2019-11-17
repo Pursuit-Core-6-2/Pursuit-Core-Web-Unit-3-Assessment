@@ -6,7 +6,7 @@ CREATE DATABASE marine_biology_db;
 
 CREATE TABLE researchers (
     id SERIAL PRIMARY KEY,
-    name VARCHAR,
+    firstname VARCHAR,
     job_title VARCHAR
 );
 
@@ -34,7 +34,7 @@ CREATE TABLE sightings (
     habitat_id INT REFERENCES habitats(id) ON DELETE CASCADE
 ); 
 
-INSERT INTO researchers(name, job_title) VALUES
+INSERT INTO researchers(firstname, job_title) VALUES
 ('Mariana Aleta', 'Project Lead'),
 ('Javed', 'Senior Field Researcher'),
 ('Carolina', 'Field Researcher'),

@@ -10,7 +10,7 @@ router.get('/', async (req, res) => {
     try {
        // let sightings = await db.any("SELECT * FROM sightings")
        // let sightings = await db.any("SELECT * FROM sightings, researchers WHERE sightings.researcher_id = researchers.id")
-       let sightings = await db.any("SELECT * FROM sightings INNER JOIN researchers ON researchers.id = sightings.researcher_id INNER JOIN species ON species.id = sightings.species_id INNER JOIN habitats ON habitats.id = sightings.habitat_id")
+      let sightings = await db.any("SELECT * FROM sightings INNER JOIN researchers ON researchers.id = sightings.researcher_id INNER JOIN species ON species.id = sightings.species_id INNER JOIN habitats ON habitats.id = sightings.habitat_id")
         res.status(200)
         res.json({
             payload: sightings,
