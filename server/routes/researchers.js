@@ -47,8 +47,15 @@ router.get('/:id', async (req, res) => {
 // POST /researchers: Add new researcher.
 router.post('/', async (req, res) => {
     let name = req.body.name
-    let isMammal = req.body.jobtitle  
-    try {
+    let jobTitle = req.body.jobtitle  
+
+    if (!name || !jobTitle) {
+        res.status(500)
+        res.json({
+            message: "Please enter all information."
+        });     
+    } else {
+     try {
         let researcher = await db.any("INSERT INTO researchers (firstname, job_title) VALUES ($1, $2) RETURNING *", [name, jobTitle])
         res.status(200)
         res.json({
@@ -62,30 +69,54 @@ router.post('/', async (req, res) => {
         })
         console.log(error)
     }
+ }
 })
 
 
-// PATCH /researchers/:id: Update single researcher.
 router.patch('/:id', async (req, res) => {
     let id = req.params.id
     let name = req.body.name
     let jobTitle = req.body.jobtitle  
-    try {
-        let researcher = await db.any("UPDATE researchers SET firstname = $1, job_title = $2 WHERE id = $3 RETURNING *", [name, jobTitle, id]) // changed from 'none' to 'any' because I'm returning all rows updated
-        res.status(200)
-        res.json({
-            payload: researcher,
-            message: `Success. Updated ${jobTitle} and ${name} in researchers table.`
-        });
-    } catch (error) {
-        res.status(500)
-        res.json({
-            message: "Error. Something went wrong!"
-        })
-        console.log(error)
-    }
-})
 
+    if (name) {
+        try {
+            let researcher = await db.any("UPDATE researchers SET firstname = $1 WHERE id = $2 RETURNING *", [name, id]) // changed from 'none' to 'any' because I'm returning all rows updated
+            res.status(200)
+            res.json({
+                payload: researcher,
+                message: `Success. Updated ${name} in researchers table.`
+            });
+        } catch (error) {
+            res.status(500)
+            res.json({
+                message: "Error. Something went wrong!"
+            })
+            console.log(error)
+        }
+    } else if (jobTitle) {
+        try {
+            let researcher = await db.any("UPDATE researchers SET job_title = $1 WHERE id = $2 RETURNING *", [jobTitle, id]) 
+            res.status(200)
+            res.json({
+                payload: researcher,
+                message: `Success. Updated ${jobTitle} in researchers table.`
+            });
+        } catch (error) {
+            res.status(500)
+            res.json({
+                message: "Error. Something went wrong!"
+            })
+            console.log(error)
+        }
+
+    } else {
+        res.status(500)
+            res.json({
+                message: "Error. Something went wrong!"
+            })
+    }
+
+})
 
 // DELETE /researchers/:id: Delete single researcher.
 router.delete('/:id', async (req, res) => {
