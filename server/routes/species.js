@@ -49,6 +49,13 @@ router.get('/:id', async (req, res) => {
 router.post('/', async (req, res) => {
     let name = req.body.name
     let isMammal = req.body.ismammal 
+
+    if (!name || !isMammal) {
+        res.status(500)
+        res.json({
+            message: "Please enter all information."
+        });     
+    } else {
     try {
         let species = await db.any("INSERT INTO species (name, is_mammal) VALUES ($1, $2) RETURNING *", [name, isMammal])
         res.status(200)
@@ -63,6 +70,7 @@ router.post('/', async (req, res) => {
         })
         console.log(error)
     }
+  }
 })
 
 module.exports = router; 

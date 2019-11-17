@@ -51,6 +51,13 @@ router.get('/:id', async (req, res) => {
 router.post('/', async (req, res) => {
     let speciesId = req.body.speciesId
     let name = req.body.name
+
+    if (!name || !speciesId) {
+        res.status(500)
+        res.json({
+            message: "Please enter all information."
+        });     
+    } else {
     try {
         let species = await db.any("INSERT INTO animals (species_id, nickname) VALUES ($1, $2) RETURNING *", [speciesId, name])
         res.status(200)
@@ -65,6 +72,7 @@ router.post('/', async (req, res) => {
         })
         console.log(error)
     }
+  }
 })
 
 
