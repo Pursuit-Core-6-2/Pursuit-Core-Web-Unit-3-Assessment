@@ -7,7 +7,7 @@ router.get('/', async (request, response) => {
     console.log('currently running');
 
     try {
-        let sightings = await db.any(`SELECT * FROM sightings`);
+        let sightings = await db.any(`SELECT * FROM sightings JOIN researchers ON researchers.id = sightings.researcher_id JOIN species ON species.id = sightings. species_id JOIN habitats ON habitats.id = sightings.habitat_id`);
 
         response.json({
             status: 'success',
@@ -58,7 +58,7 @@ router.get('/researchers/:id', async (request, response) => {
     let id = request.params.id;
 
     try {
-        let researcherSightingQuery = `SELECT * FROM sightings WHERE researcher_id = $1`;
+        let researcherSightingQuery = `SELECT * FROM sightings JOIN researchers ON researchers.id = sightings.researcher_id JOIN species ON species.id = sightings. species_id JOIN habitats ON habitats.id = sightings.habitat_id WHERE researcher_id = $1`;
         let sightings = await db.any(researcherSightingQuery, [id]);
 
         response.json({

@@ -12,7 +12,7 @@ CREATE TABLE researchers (
 
 CREATE TABLE species (
     id SERIAL PRIMARY KEY,
-    name VARCHAR,
+    sp_name VARCHAR,
     is_mammal BOOLEAN
 );
 
@@ -41,7 +41,7 @@ INSERT INTO researchers (name, job_title)
             ('Jazmyn Gottfried', 'Field Researcher'),
             ('Ezra Flip', 'Research Intern');
 
-INSERT INTO species (name, is_mammal)
+INSERT INTO species (sp_name, is_mammal)
     VALUES  ('Dolphin', 'true'),
             ('Moray Eel', 'false'),
             ('Tiger Shark', 'false'),
