@@ -28,14 +28,19 @@ router.get("/", async (req, res, next) => {
 
 router.get("/:id", async (req, res) => {
     try {
+        
         let selectQuery = `SELECT * FROM habitats WHERE id = $1`
         let user = await db.any(selectQuery, parseInt(req.params.id))
+        if(user.length === 1){
+            res.json({
+                status: "success",
+                message: `retrieved single habitat`,
+                payload: user
+            });
+        }else{
+            return error;
+        }
 
-        res.json({
-            status: "success",
-            message: `retrieved single habitat`,
-            payload: user
-        });
     } catch (error) {
         res.json({
             "status": "error",
@@ -55,13 +60,20 @@ router.post("/", async (req, res) => {
         let insertQuery = `INSERT INTO habitats(catergory) 
         VALUES($1);`
         await db.none(insertQuery, [req.body.catergory])
-        res.json({
-            body: req.body,
-            message: `Added a new habitat`
-        });
+        console.log(req.body.catergory)
+        console.log(req.body.catergory.length)
+        if(req.body.catergory.length === 0){
+           return error;
+        }else{
+            res.json({
+                body: req.body,
+                message: `Added a new habitat`
+            });
+        }
+        
     } catch (error) {
         res.json({
-            message: `There was an error!`
+            message: `Failed to add a new habitat`
         });
     }
 })
