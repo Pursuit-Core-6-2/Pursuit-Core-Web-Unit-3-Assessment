@@ -23,7 +23,7 @@ router.get('/',  async (req,res)=>{
 router.get('/:id', async(req, res)=>{
    let id = Number(req.params.id)
    try {
-       let animal = await db.one(`SELECT * FROM animals WHERE id = ${id}`)
+       let animal = await db.one(`SELECT * FROM animals WHERE ani_id = ${id}`)
        res.json({
            payload : animal,
            message : `Success. Retrieved animal with id: ${id}`
@@ -69,7 +69,7 @@ router.delete('/:id', async(req, res) =>{
    let id = Number(req.params.id);
    console.log(id)
    try{
-       let removedAnimal =  await db.none(`DELETE FROM animals WHERE id = ${id}`)
+       let removedAnimal =  await db.none(`DELETE FROM animals WHERE ani_id = ${id}`)
        res.json({
            message: `Success! animal ${id} has been removed.`
        })

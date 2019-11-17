@@ -54,7 +54,7 @@ router.delete('/:id', async(req, res) =>{
    let id = Number(req.params.id);
    console.log(id)
    try{
-       let removedSighting =  await db.none(`DELETE FROM researchers WHERE id = ${id}`)
+       let removedSighting =  await db.none(`DELETE FROM species WHERE spe_id = ${id}`)
        res.json({
            message: `Success! sighting ${id} has been removed.`
        })

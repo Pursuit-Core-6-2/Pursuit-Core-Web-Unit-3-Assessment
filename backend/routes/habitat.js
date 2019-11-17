@@ -23,7 +23,7 @@ router.get('/',  async (req,res)=>{
 router.get('/:id', async(req, res)=>{
    let id = Number(req.params.id)
    try {
-       let species = await db.one(`SELECT * FROM habitat WHERE id = ${id}`)
+       let species = await db.one(`SELECT * FROM habitat WHERE hab_id = ${id}`)
        res.json({
            payload : species,
            message : `Success. Retrieved habitat with id: ${id}`

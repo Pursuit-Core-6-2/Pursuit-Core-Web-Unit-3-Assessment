@@ -5,34 +5,34 @@ CREATE DATABASE marine_db;
 \c marine_db
 
 CREATE TABLE researchers (
-   id SERIAL PRIMARY KEY,
+   res_id SERIAL PRIMARY KEY,
    name VARCHAR,
    job_title VARCHAR
 );
 
 CREATE TABLE species (
-   id SERIAL PRIMARY KEY,
+   spe_id SERIAL PRIMARY KEY,
    name VARCHAR,
    is_mammal VARCHAR NOT NULL,
    completed BOOLEAN DEFAULT FALSE
 );
 
 CREATE TABLE animals (
-   id SERIAL PRIMARY KEY,
-   species_id INT REFERENCES species (id),
+   ani_id SERIAL PRIMARY KEY,
+   species_id INT REFERENCES species (spe_id),
    nickname VARCHAR
 );
 
 CREATE TABLE habitat (
-   id SERIAL PRIMARY KEY,
+   hab_id SERIAL PRIMARY KEY,
    category VARCHAR
 );
 
 CREATE TABLE sightings (
-   id SERIAL PRIMARY KEY,
-   researcher_id INT REFERENCES researchers (id) ON DELETE SET NULL,
-   species_id INT  REFERENCES species (id) ON DELETE CASCADE,
-   habitat_id INT REFERENCES habitat (id)
+   sig_id SERIAL PRIMARY KEY,
+   researcher_id INT REFERENCES researchers (res_id) ON DELETE SET NULL,
+   species_id INT  REFERENCES species (spe_id) ON DELETE CASCADE,
+   habitat_id INT REFERENCES habitat (hab_id)
 );
 
 INSERT INTO researchers(name, job_title) 
