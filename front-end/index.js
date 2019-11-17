@@ -9,8 +9,8 @@ const fetchSightings = () =>{
         let researcher_id = response.data.payload.sightings[0].researcher_id
         let species_id = response.data.payload.sightings[0].species_id
         let habitat_id = response.data.payload.sightings[0].habitat_id
-        fetch_researcher(researcher_id)
-        fetch_species(species_id)
+        console.log(fetch_researcher(researcher_id))
+        // fetch_species(species_id)
         // fetch_habitat(habitat_id)
     })
 }
@@ -21,20 +21,4 @@ const fetch_researcher = (id) =>{
         name = response.data.payload.researcher.full_name
     })
     return name
-}
-
-const fetch_species = (id) =>{
-    axios.get(`http://localhost:3000/species/${id}`)
-    .then(response =>{
-        species_name = response.data.payload.species.species_name
-    })
-    return species_name
-}
-
-const fetch_species = (id) =>{
-    axios.get(`http://localhost:3000/habitat/${id}`)
-    .then(response =>{
-        species_name = response.data.payload.category
-    })
-    return species_name
 }
