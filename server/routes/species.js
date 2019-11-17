@@ -30,12 +30,16 @@ router.get("/:id", async (req, res) => {
     try {
         let selectQuery = `SELECT * FROM species WHERE id = $1`
         let user = await db.any(selectQuery, parseInt(req.params.id))
+        if (user.length === 1) {
+            res.json({
+                status: "success",
+                message: `retrieved single species`,
+                payload: user
+            });
+        } else {
+            return error;
+        }
 
-        res.json({
-            status: "success",
-            message: `retrieved single species`,
-            payload: user
-        });
     } catch (error) {
         res.json({
             "status": "error",
@@ -52,16 +56,30 @@ router.get("/:id", async (req, res) => {
 
 router.post("/", async (req, res) => {
     try {
-        let insertQuery = `INSERT INTO species(name,is_mamamal) 
+        let insertQuery = `INSERT INTO species(name,is_mammal) 
         VALUES($1,$2);`
-        await db.none(insertQuery, [req.body.name, req.body.is_mamamal])
-        res.json({
-            body: req.body,
-            message: `Added a new researcher`
-        });
+        
+  
+        await db.none(insertQuery, [req.body.name, req.body.is_mammal])
+        console.log(typeof(req.body.is_mammal))
+        if(req.body.name === ""||  req.body.is_mammal === "" ){
+          return error;
+   
+        }else if(req.body.is_mammal == "true" || req.body.is_mammal === "false"){
+            res.json({
+                status: "success",
+                 body: req.body,
+                 message: `Added a new species`
+             });
+        }else{
+            return error;
+        }
+        
+       
     } catch (error) {
         res.json({
-            message: `There was an error!`
+            status: 'failed',
+            message: 'failed to add new species'
         });
     }
 })
