@@ -13,7 +13,7 @@ CREATE TABLE researchers (
 CREATE TABLE species (
     id SERIAL PRIMARY KEY, 
     name VARCHAR, 
-    is_mammal BOOLEAN DEFAULT FALSE
+    is_mammal VARCHAR
 );
 
 CREATE TABLE animals (
