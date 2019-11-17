@@ -93,4 +93,23 @@ router.post('/', async (req, res) => {
         });
     }
 });
+router.delete('/:id', async (req, res) => {
+    let sightingId = Number(req.params.id);
+    try {
+        let deleteQuery = `DELETE FROM sightings
+                    WHERE id = $1`;
+        await db.none(deleteQuery, sightingId);
+        res.json({
+            status: 'Success',
+            message: 'Sighting was deleted from database'
+        })
+    }
+    catch(error) {
+        res.json({
+            status: 'Error',
+            message: 'Sighting could not be deleted',
+            payload: null
+        });
+        };
+});
 module.exports = router;
