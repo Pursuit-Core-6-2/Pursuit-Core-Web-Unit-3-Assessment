@@ -70,4 +70,4 @@ INSERT INTO sightings(species_id, researcher_id, habitat_id) VALUES
 (2, 5, 1)  -- A Moray Eel was spotted by Ezra Flip in the Shallows.
 ;
 
-SELECT * FROM researchers;
+SELECT * FROM animals;

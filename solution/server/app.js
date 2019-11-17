@@ -5,6 +5,8 @@ const port = 3000;
 const bodyParser = require('body-parser');
 const researchersRouter = require('./routes/researchers.js')
 const speciesRouter = require('./routes/species.js')
+const animalsRouter = require('./routes/animals.js')
+
 
 app.use(cors());
 app.listen(port, () => {
@@ -16,3 +18,4 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json());
 app.use('/researchers', researchersRouter);
 app.use('/species', speciesRouter);
+app.use('/animals', animalsRouter);
