@@ -5,7 +5,11 @@ const port = 3000;
 const bodyParser = require('body-parser');
 
 const usersRouter = require('./routes/users');
-const researchRouter = require('./routes/researchers/researchers_route')
+const researchRouter = require('./routes/researchers_route')
+const speciesRouter = require('./routes/species_route')
+const animalsRouter = require('./routes/animals')
+const habitatsRouter = require('./routes/habitats_route')
+
 
 app.use(cors());
 app.use(bodyParser.urlencoded({
@@ -14,6 +18,10 @@ app.use(bodyParser.urlencoded({
 app.use(bodyParser.json());
 app.use('/users',usersRouter);
 app.use('/researcher',researchRouter);
+app.use('/species',speciesRouter);
+app.use('/animals',animalsRouter);
+app.use('/habitats',habitatsRouter);
+
 
 app.listen(port,()=>{
     console.log(`listening on port ${port}`);
