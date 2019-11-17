@@ -9,7 +9,8 @@ const db = require('./database');
 // GET /animals: Get all animals.
 router.get('/', async (req, res) => {
     try {
-        let animals = await db.any("SELECT * FROM animals")
+       //let animals = await db.any("SELECT * FROM animals")
+       let animals = await db.any("SELECT * FROM animals INNER JOIN species ON species.id = animals.species_id")
         res.status(200)
         res.json({
             payload: animals,
@@ -29,7 +30,8 @@ router.get('/', async (req, res) => {
 router.get('/:id', async (req, res) => {
     let id = req.params.id 
     try {
-        let species = await db.one("SELECT * FROM animals WHERE id = $1", [id])
+        //let species = await db.one ("SELECT * FROM animals WHERE id = $1", [id])
+       let species = await db.any("SELECT * FROM animals INNER JOIN species ON species.id = animals.species_id WHERE animals.id = $1", [id])
         res.status(200)
         res.json({
             payload: species,
