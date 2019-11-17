@@ -64,10 +64,18 @@ router.post('', async(req, res) => {
 })
 
 router.patch('/:id', async(req, res) =>{
+    let id = req.params.id
+    let name = req.body.name
+    let job_title = req.body.job_title
     try{
-        await db.one(`UPDATE researchers SET name = ${req.body.name}, job_title = ${req.body.job_title} WHERE id = ${req.params.id}`)
+        await db.any(`UPDATE researchers SET name = $1, job_title = $2 WHERE id = $3 RETURNING *`, [name, job_title, id])
         res.json({
-            "message": "updated post"
+            "message": "updated post",
+            "payload": { 
+                id: id,
+                name: name,
+                job_title: job_title
+            }
         })
     }catch(error){
         console.log(error)
@@ -82,7 +90,7 @@ router.delete('/:id', async(req, res) => {
         let deleteResearcher = await db.none(`DELETE FROM researchers WHERE id = ${req.params.id}`)
         res.json({
             "message": "deleted researcher",
-            "payload": deleteResearcher
+            // "payload": {deleteResearcher}
         })
     }catch(error){
         res.json({

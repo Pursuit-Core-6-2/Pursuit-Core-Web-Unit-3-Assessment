@@ -63,8 +63,10 @@ router.post('', async(req, res) => {
 })
 
 router.patch('/:id', async(req, res) => {
+    let species_id = req.body.species_id;
+    let nickname = req.body.nickname
     try{
-        await db.one(`UPDATE animals SET species_id = ${req.body.species_id}, nickname = ${req.body.nickname} WHERE id = ${req.params.id}`);
+        await db.one(`UPDATE animals SET species_id = $1, nickname = $2 WHERE id = ${req.params.id} RETURNING *`, [species_id, nickname]);
         res.json({
             "message": "updated post"
         })

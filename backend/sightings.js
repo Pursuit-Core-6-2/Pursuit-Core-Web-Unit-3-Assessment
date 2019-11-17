@@ -68,7 +68,7 @@ router.get('/habitats/:id', async(req, res) => {
           res.json({
               "status": "success",
               "message": "retrived",
-              "payload": getSightings,
+              "payload": getHabitatSightings,
           })
       }catch (error) {
           // console.log(error);
@@ -84,7 +84,7 @@ router.post('', async(req, res) => {
         let species = req.body.species_id;
         let habitat = req.body.habitat_id;
 
-        let insertQuery = `INSERT into animals(researcher_id, species_id, habitat_id)VALUES($1,$2,$3)`
+        let insertQuery = `INSERT into sightings(researcher_id, species_id, habitat_id)VALUES($1,$2,$3)`
 
         if(!researcher || !species|| !habitat){
             res.json({
@@ -98,6 +98,7 @@ router.post('', async(req, res) => {
             })
         }
     }catch(error){
+        console.log(error)
         res.json({
             "message": error
         })
