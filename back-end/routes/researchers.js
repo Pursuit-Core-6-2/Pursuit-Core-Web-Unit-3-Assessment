@@ -31,7 +31,7 @@ router.get('/:id', async (req,res) =>{
             status : 'success',
             message : 'retrieved single researcher',
             payload : {
-                'researcher': researcher
+                researcher : researcher
             }
         })
     }catch(err){
@@ -52,19 +52,18 @@ router.post('', async (req,res) =>{
         `INSERT into researchers(full_name, job_title) VALUES
         ($1, $2)`
 
-        if(!req.body.name && !req.body.job){
+        if(!name && !job){
             res.json({
                 status : 'error',
                 message: "information missing"
             })
         }else{
-            await db.none(insert_query, [req.body.name, req.body.job]);   
+            await db.none(insert_query, [name, job]); 
+            res.json({
+                status : 'success',
+                message : 'added single researcher',
+            })  
         }
-        res.json({
-            status : 'success',
-            message : 'added single researcher',
-
-        })
     }catch(err){
         console.log(err);
         res.json({
