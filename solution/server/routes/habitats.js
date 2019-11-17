@@ -37,6 +37,25 @@ router.get('/:id', async (req, res) => {
         });
     }
 });
-
+router.post('/', async (req, res) => {
+    let newHabitat = req.body;
+    try {
+        let insertQuery = `INSERT INTO habitats(category)
+            VALUES($1)`
+        await db.none(insertQuery, [newHabitat.category]);
+        res.json({
+            status: 'Success',
+            message: "New habitat created",
+            payload: newHabitat
+        })
+    }
+    catch (error) {
+        res.json({
+            status: 'Error',
+            message: 'Error posting new habitat',
+            payload: null
+        });
+    }
+});
 module.exports = router;
 
