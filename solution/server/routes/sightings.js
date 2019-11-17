@@ -19,24 +19,6 @@ router.get('/', async (req, res) => {
         });
     }
 });
-router.get('/species/:id', async (req, res) => {
-    let speciesId = Number(req.params.id);
-    try {
-        let sightings = await db.any('SELECT * FROM sightings WHERE species_id = $1', speciesId);
-        res.json({
-            status: 'Success',
-            message: 'Sightings by species retrieved',
-            payload: sightings
-        });
-    }
-    catch(error) {
-        res.json({
-            status: 'Error',
-            message: 'Could not load sighting by species.',
-            payload: null,
-        });
-    }
-});
 router.get('/researchers/:id', async (req, res) => {
     let researcherId = Number(req.params.id);
     try {
@@ -51,6 +33,24 @@ router.get('/researchers/:id', async (req, res) => {
         res.json({
             status: 'Error',
             message: 'Could not load sighting by researcher.',
+            payload: null,
+        });
+    }
+});
+router.get('/species/:id', async (req, res) => {
+    let speciesId = Number(req.params.id);
+    try {
+        let sightings = await db.any('SELECT * FROM sightings WHERE species_id = $1', speciesId);
+        res.json({
+            status: 'Success',
+            message: 'Sightings by species retrieved',
+            payload: sightings
+        });
+    }
+    catch(error) {
+        res.json({
+            status: 'Error',
+            message: 'Could not load sighting by species.',
             payload: null,
         });
     }
@@ -70,6 +70,26 @@ router.get('/habitats/:id', async (req, res) => {
             status: 'Error',
             message: 'Could not load sighting by habitat.',
             payload: null,
+        });
+    }
+});
+router.post('/', async (req, res) => {
+    let newSighting = req.body;
+    try {
+        let insertQuery = `INSERT INTO sightings(researcher_id, species_id, habitat_id)
+            VALUES($1, $2, $3)`
+        await db.none(insertQuery, [newSighting.researcher_id, newSighting.species_id, newSighting.habitat_id]);
+        res.json({
+            status: 'Success',
+            message: "New sighting posted",
+            payload: newSighting
+        })
+    }
+    catch (error) {
+        res.json({
+            status: 'Error',
+            message: 'Error posting new sighting',
+            payload: null
         });
     }
 });
