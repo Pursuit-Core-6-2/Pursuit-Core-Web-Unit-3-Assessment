@@ -29,4 +29,31 @@ router.get('/', async (req, res) => {
     }
 })
 
+//Get habitats by ID
+router.get('/:habitat_id', async (req, res) => {
+    let findHabitat = `
+        SELECT *
+        FROM habitats
+        WHERE id = $1
+    `
+    console.log('Researchers single endpoint reached/ ', Date())
+
+    try {
+        let habitat = await db.one(findHabitat, [req.params.habitat_id])
+        res.json({
+            status: "success",
+            message: "retrieved single habitat",
+            payload: habitat
+        })
+    } catch (error) {
+        res.status(500)
+        console.log(error)
+        res.json({
+            status: "error",
+            message: "researcher not found",
+            payload: null
+        })
+    }
+})
+
 module.exports = router;
