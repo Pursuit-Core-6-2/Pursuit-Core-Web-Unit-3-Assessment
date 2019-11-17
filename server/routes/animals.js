@@ -52,7 +52,7 @@ router.patch('/:id', async (req, res, next) => {
         let animal_id = parseInt(req.params.id)
         let updateQuery = 
         `UPDATE animals
-        SET species_id = 1, 
+        SET species_id = $1, 
         nickname = $2
         wHERE id = $3`
         await db.none(updateQuery, [req.body.species_id, req.body.nickname,animal_id])

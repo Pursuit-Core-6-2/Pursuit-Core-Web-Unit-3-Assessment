@@ -24,8 +24,8 @@ app.use('/researchers', researchersRouter);
 app.use('/species', speciesRouter);
 app.use('/animals', animalsRouter);
 
-// app.use('/habitats', habitatsRouter);
-// app.use('/sightings', sightingsRouter);
+app.use('/habitats', habitatsRouter);
+app.use('/sightings', sightingsRouter);
 
 
 
