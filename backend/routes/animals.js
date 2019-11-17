@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
-//const researcher = require("./researcher.js");
-const db  = require('./researchers').db
+const { db } = require('../database/index.js');
 
 router.get('/',  async (req,res)=>{
    try {
@@ -20,7 +19,7 @@ router.get('/',  async (req,res)=>{
 })
 
 
-// retrieving researcher by id
+// retrieving animal by id
 router.get('/:id', async(req, res)=>{
    let id = Number(req.params.id)
    try {
@@ -36,5 +35,50 @@ router.get('/:id', async(req, res)=>{
        })
    }
 })
+
+//add new animal
+router.post('/register', async (req, res)=>{
+   let insertQuery =  `INSERT INTO researchers(species_id, nickname)
+   VALUES($1, $2);`
+
+   let species_id = req.body.species_id
+   let nickname = req.body.nickname
+
+   let body = {
+       name: species_id,
+       job_title: nickname
+   }
+
+   try{
+       await db.none(insertQuery,[species_id, nickname])
+       res.json({
+           status : 'success',  
+           message: 'Animal added',
+           body: body
+       })
+   } catch (error) {
+       console.log(error)
+       res.json({
+           message: error.detail
+       })
+   }
+})
+
+//removing animal
+router.delete('/:id', async(req, res) =>{
+   let id = Number(req.params.id);
+   console.log(id)
+   try{
+       let removedAnimal =  await db.none(`DELETE FROM animals WHERE id = ${id}`)
+       res.json({
+           message: `Success! animal ${id} has been removed.`
+       })
+   } catch (error) {
+       console.log(error)
+       res.json({
+           message: `Unable to remove animal.`
+       })
+   }
+   })
 
 module.exports = router;

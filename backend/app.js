@@ -4,9 +4,9 @@ const cors = require('cors');
 //const indexRouter = require('./routes/index');
 const researchersRouter = require('./routes/researchers');
 const animalsRouter = require('./routes/animals');
-//const habitatRouter = require('./routes/habitat');
-//const speciesRouter = require('./routes/species');
-//const sightingsRouter = require('./routes/sightings')
+const habitatRouter = require('./routes/habitat');
+const speciesRouter = require('./routes/species');
+const sightingsRouter = require('./routes/sightings')
 
 const app = express();
 const PORT = 3000;
@@ -18,15 +18,15 @@ app.use(express.urlencoded({ extended: false }));
 //app.use('/', indexRouter)
 app.use('/researchers', researchersRouter);
 app.use('/animals', animalsRouter);
-//app.use('/habitat', habitatRouter);
-//app.use('/species', speciesRouter)
-//app.use('/sightings', sightingsRouter)
+app.use('/habitat', habitatRouter);
+app.use('/species', speciesRouter)
+app.use('/sightings', sightingsRouter)
 
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
   res.status(404).json({
-    payload: "Nothing found here =(. The endpoint or method is unhandled by the Server",
+    payload: "Nothing found. The endpoint or method is unhandled by the Server",
     err: true
   })
 });

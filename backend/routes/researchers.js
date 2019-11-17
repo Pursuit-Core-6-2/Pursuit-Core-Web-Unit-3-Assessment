@@ -26,7 +26,7 @@ router.get('/',  async (req,res)=>{
 router.get('/:id', async(req, res)=>{
     let id = Number(req.params.id)
     try {
-        let researcher = await db.one(`SELECT * FROM researcher WHERE id = ${id}`)
+        let researcher = await db.one(`SELECT * FROM researchers WHERE id = ${id}`)
         res.json({
             payload : researcher,
             message : `Success. Retrieved researcher with id: ${id}`
@@ -41,7 +41,7 @@ router.get('/:id', async(req, res)=>{
 
 // adding a new researcher 
 router.post('/register', async (req, res)=>{
-    let insertQuery =  `INSERT INTO researcher(name, job_title)
+    let insertQuery =  `INSERT INTO researchers(name, job_title)
     VALUES($1, $2);`
 
     let name = req.body.name
@@ -72,7 +72,7 @@ router.delete('/:id', async(req, res) =>{
 let id = Number(req.params.id);
 console.log(id)
 try{
-    let removedAnimal =  await db.none(`DELETE FROM researcher WHERE id = ${id}`)
+    let removedResearcher =  await db.none(`DELETE FROM researchers WHERE id = ${id}`)
     res.json({
         message: `Success! researcher ${id} has been removed.`
     })
