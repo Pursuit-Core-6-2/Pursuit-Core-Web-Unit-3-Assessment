@@ -29,6 +29,32 @@ router.get('/', async (req, res) => {
     }
 })
 
+//get all sightings of certain species
+router.get('/species/:species_name', async (req, res) => {
+    console.log('Sightings species endpoint reached/ ', Date())
+    try {
+        let speciesSightings = await db.any (`
+        SELECT 
+           species.name, species.is_mammal, sightings.researcher_id
+        FROM species
+        INNER JOIN sightings ON  sightings.id = species.id
+        WHERE species.name = '${req.params.species_name}'
+        `)
+        res.json({
+                status: "success",                      
+                message: "retrieved all sightings", 
+                payload: speciesSightings
+        })
+    } catch (error) {
+        res.status(500)
+        res.json({
+            status: "error",
+            message: "Sightings not found",
+            payload: null
+        })
+    }
+})
+
 //Report new sighting
 router.post('/', async (req, res) => {
     let addNewSighting =
