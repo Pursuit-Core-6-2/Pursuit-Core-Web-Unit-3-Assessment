@@ -100,13 +100,42 @@ router.patch('/:staff_id', async (req, res) => {
         res.json({
             status: "success",
             message: "Researcher updated",
-            payload: req.body,
+            payload: req.body
         })
     } catch(error) {
         console.log(error)
         res.json({
             status: "error",
             message: "Could not update researcher",
+            payload: null
+        })
+    }
+})
+
+router.delete('/:staff_id', async (req, res) => {
+    let staffDelete =
+    `DELETE FROM researchers WHERE id = '${req.params.staff_id}'`
+    
+    let staffMember = await db.one (
+        `SELECT
+            *
+        FROM
+            researchers
+        WHERE id = ${req.params.staff_id}`)
+
+    console.log(staffMember)
+
+    try {
+        await db.none(staffDelete)
+        res.json({
+            status: "success",
+            message: "Researcher deleted",
+            payload: staffMember
+        })
+    } catch(error) {
+        res.json({
+            status: "error",
+            message: 'Could not delete researcher',
             payload: null
         })
     }
