@@ -20,4 +20,28 @@ router.get('/all' , async(req, res) =>{
     }
 })
 
+router.get('/species/:id', async(req, res)=> {
+    let id = req.params.id
+    let sightingsQuery = `SELECT sightings.id sightings, 
+          species.name species 
+          FROM sightings 
+          INNER JOIN species ON sightings.species_id = species.id 
+          WHERE sightings.id = ${id}`
+    try {
+       let getSightings = await db.one(sightingsQuery)
+       console.log(getSightings)
+        res.json({
+            status: 'success', 
+            message: 'sightings have been retrieved by species',
+            payload : getSightings
+        })
+    } catch(error) {
+        res.json({
+            status:'error',
+            message : error
+        })
+    }
+})
+
+
 module.exports = router;
