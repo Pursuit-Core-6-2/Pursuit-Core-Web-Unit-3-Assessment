@@ -8,7 +8,10 @@ const getSightings = async () => {
     let selectBoxValue = Number(selectBox.value);
     let url = `http://localhost:3000/sightings/researchers/${selectBoxValue}`;
     let researcherSightings = await axios.get(url).then(response => {return response.data.payload})
-    console.log(researcherSightings)
+    researcherSightings.forEach(elem => {
+        getAnimalById(elem.id)
+    })
+
 };
 const createOptions = async (selectBox) => {
     let url = `http://localhost:3000/researchers`
@@ -21,4 +24,9 @@ const createOptions = async (selectBox) => {
             newOption.value = researcherId;
             selectBox.append(newOption);
     });
+};
+const getAnimalById = async (id) => {
+    let url = `http://localhost:3000/animals/${id}`;
+    let animalsObj = await axios.get(url).then(response => {return response.data.payload})
+    console.log(animalsObj)
 }
