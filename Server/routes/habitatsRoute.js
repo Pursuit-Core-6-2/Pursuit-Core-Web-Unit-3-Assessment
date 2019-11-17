@@ -56,4 +56,27 @@ router.get('/:habitat_id', async (req, res) => {
     }
 })
 
+//create a new habitat
+router.post('/', async (req, res) => {
+    let addNewHabitat =
+    `INSERT INTO habitats(category)
+        VALUES($1)`
+    
+    try {
+        await db.none(addNewHabitat, [req.body.category])
+        res.json({
+            status: "success",
+            message: "Created a new habitat",
+            payload: req.body
+        })
+    } catch(error) {
+        res.status(404)
+        res.json({
+            status: "error",
+            message: "Could not create new habitat",
+            payload: null
+        })
+    }
+})
+
 module.exports = router;
