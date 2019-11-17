@@ -19,8 +19,8 @@ router.get('/', async (req, res) => {
         });
     }
 });
-router.get('/:species_id', async (req, res) => {
-    let speciesId = req.params.species_id;
+router.get('/species/:id', async (req, res) => {
+    let speciesId = Number(req.params.id);
     try {
         let sightings = await db.any('SELECT * FROM sightings WHERE species_id = $1', speciesId);
         res.json({
@@ -33,6 +33,24 @@ router.get('/:species_id', async (req, res) => {
         res.json({
             status: 'Error',
             message: 'Could not load sighting by species.',
+            payload: null,
+        });
+    }
+});
+router.get('/researchers/:id', async (req, res) => {
+    let researcherId = Number(req.params.id);
+    try {
+        let sightings = await db.any('SELECT * FROM sightings WHERE researcher_id = $1', researcherId);
+        res.json({
+            status: 'Success',
+            message: 'Sightings by researcher retrieved',
+            payload: sightings
+        });
+    }
+    catch(error) {
+        res.json({
+            status: 'Error',
+            message: 'Could not load sighting by researcher.',
             payload: null,
         });
     }
