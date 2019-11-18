@@ -85,11 +85,11 @@ VALUES(4, 4, 4 ),
 -- SELECT * FROM habitats;
 -- SELECT * FROM sightings;
 
-SELECT researchers.name, species.name, habitats.catergory FROM sightings 
-INNER JOIN species ON sightings.species_id = species.id 
-INNER JOIN researchers ON sightings.researcher_ID = researchers.id
-INNER JOIN habitats ON sightings.habitat_id = habitats.id
-WHERE researchers.name=  'Ezra Flip'  ;
+-- SELECT researchers.name, species.name, habitats.catergory FROM sightings 
+-- INNER JOIN species ON sightings.species_id = species.id 
+-- INNER JOIN researchers ON sightings.researcher_ID = researchers.id
+-- INNER JOIN habitats ON sightings.habitat_id = habitats.id
+-- WHERE researchers.name=  'Ezra Flip'  ;
 -- SELECT species.name, habitats.catergory  FROM sightings JOIN species ON species.id=sightings.species_id 
 -- -- FROM sightings JOIN researchers  ON researcher.id = sightings.researcher_ID
 
@@ -105,3 +105,9 @@ WHERE researchers.name=  'Ezra Flip'  ;
 --     INNER JOIN user_holds ON users.user_id = user_holds.holds_user_id 
 --     INNER JOIN holds ON user_holds.holds_hold_id = holds.hold_id 
 --     WHERE holds.hold_id = $1;`
+
+
+SELECT researchers.name AS researcher, species.name AS animal, habitats.catergory FROM sightings 
+        INNER JOIN species ON sightings.species_id = species.id 
+        INNER JOIN researchers ON sightings.researcher_ID = researchers.id
+        INNER JOIN habitats ON sightings.habitat_id = habitats.id;

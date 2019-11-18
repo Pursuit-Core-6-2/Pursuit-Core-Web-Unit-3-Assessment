@@ -30,7 +30,7 @@ router.get("/:id", async (req, res) => {
 
         // let selectQuery = `SELECT * FROM researchers WHERE id = $1`
 
-        let selectQuery =  `SELECT researchers.name, species.name, habitats.catergory FROM sightings 
+        let selectQuery =  `SELECT researchers.name AS researcher, species.name  AS animal, habitats.catergory FROM sightings 
         INNER JOIN species ON sightings.species_id = species.id 
         INNER JOIN researchers ON sightings.researcher_ID = researchers.id
         INNER JOIN habitats ON sightings.habitat_id = habitats.id

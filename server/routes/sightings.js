@@ -9,8 +9,8 @@ const db = pgp(connectString);
 
 router.get("/", async (req, res, next) => {
     try {
-        let response = await db.any("SELECT * FROM sightings;");
-        // let response = await db.any("SELECT sightings.*,researchers.name, species.name, habitats.catergory FROM sightings INNER JOIN species ON sightings.species_id = species.id INNER JOIN researchers ON sightings.researcher_ID = researchers.id ")
+        // let response = await db.any("SELECT * FROM sightings;");
+        let response = await db.any("SELECT researchers.name AS researcher, species.name AS animal, habitats.catergory FROM sightings INNER JOIN species ON sightings.species_id = species.id INNER JOIN researchers ON sightings.researcher_ID = researchers.id INNER JOIN habitats ON sightings.habitat_id = habitats.id")
         console.log(response)
 
 
