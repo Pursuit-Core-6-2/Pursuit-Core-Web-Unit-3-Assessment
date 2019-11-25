@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-
+    getAllResearchers()
 })
 
 const getAllResearchers = async() => {
@@ -7,7 +7,7 @@ const getAllResearchers = async() => {
     try {
     
         let response = await axios.get(url) 
-        console.log(url)
+        console.log('response', response)
      
     } catch(error) {
          return error

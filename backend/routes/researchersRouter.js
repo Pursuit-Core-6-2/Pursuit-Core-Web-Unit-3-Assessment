@@ -4,6 +4,7 @@ const router = express.Router();
 // const Researchers = require("/../models/Researchers");
 const db = require('../database/dbFile.js')
 
+////////////////////////////////////////////////////////////
 //route to get all the researchers from the database
 router.get('/', async(req, res) => {
    
@@ -26,6 +27,7 @@ router.get('/', async(req, res) => {
     }
 })
 
+/////////////////////////////////////////////////////////////
 // route to get researcher by id from database
 router.get('/:id', async(req, res) => {
     let researcherId = req.params.id
@@ -49,6 +51,7 @@ router.get('/:id', async(req, res) => {
     }
 })
 
+//////////////////////////////////////////////////////////
 //route to add a researcher to the database
 router.post('/', async(req, res) => {
     try {
@@ -75,6 +78,7 @@ router.post('/', async(req, res) => {
     }
 })
 
+////////////////////////////////////////////////////////////////
 //route to update a researcher's information using the researcher's id  
 router.patch('/:id', async(req, res) => {
    
@@ -97,6 +101,7 @@ router.patch('/:id', async(req, res) => {
     }
 })
 
+/////////////////////////////////////////////////////////////
 //route to remove a researcher using the researcher's id
 router.delete('/:id', async(req, res) => {
     const researcherId = req.params.id  
