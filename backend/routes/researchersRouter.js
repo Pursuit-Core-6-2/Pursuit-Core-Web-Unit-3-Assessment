@@ -62,10 +62,10 @@ router.post('/', async(req, res) => {
             name: req.body.name,
             job_title: req.body.job_title
         }
-       
+       res.status(201)
         res.json({
             payload: data,
-            status_code: 201,
+            status: 'success',
             message: 'Researcher succesfully inserted'
         })
     
@@ -79,13 +79,15 @@ router.post('/', async(req, res) => {
 })
 
 ////////////////////////////////////////////////////////////////
-//route to update a researcher's information using the researcher's id  
+//route to update a researcher's name using the researcher's id  
 router.patch('/:id', async(req, res) => {
-   
+    
+    let researcherId = req.params.id
+    
     try {
         const updateQuery = `UPDATE researchers SET name=$1 WHERE id = $2`
     
-        await db.none(updateQuery, [req.body.name, req.body.id])
+        await db.any(updateQuery, [req.body.name, researcherId])
         res.json({
             name:req.body.name,
             status: 'success',
