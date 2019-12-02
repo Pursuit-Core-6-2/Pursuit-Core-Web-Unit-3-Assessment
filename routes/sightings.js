@@ -84,7 +84,7 @@ router.get('/habitats/:id', async (request, response) => {
     let id = request.params.id;
 
     try {
-        let habitatSightingQuery = `SELECT * FROM sightings WHERE species_id = $1`;
+        let habitatSightingQuery = `SELECT * FROM sightings WHERE habitat_id = $1`;
         let sightings = await db.any(habitatSightingQuery, [id]);
 
         response.json({
@@ -119,7 +119,7 @@ router.post('/', async (request, response) => {
         };
 
         let addSighting = `INSERT INTO sightings (researcher_id, species_id, habitat_id)
-        VALUES ($1, $2)`;
+        VALUES ($1, $2, $3)`;
 
         await db.none(addSighting, [researcher_id, species_id, habitat_id]);
         

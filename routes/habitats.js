@@ -32,7 +32,7 @@ router.get('/:id', async (request, response) => {
     let id = request.params.id;
 
     try {
-        let habitatsQuery = `SELECT * FROM species WHERE id = $1`
+        let habitatsQuery = `SELECT * FROM habitats WHERE id = $1`
 
         let habitat = await db.one(habitatsQuery, [id]);
 

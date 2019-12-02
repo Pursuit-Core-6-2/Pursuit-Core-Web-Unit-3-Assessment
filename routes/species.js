@@ -57,19 +57,19 @@ router.get('/:id', async (request, response) => {
 router.post('/', async (request, response) => {
     console.log('currently running');
 
-    let name = request.body.name;
+    let sp_name = request.body.sp_name;
     let is_mammal = request.body.is_mammal;
     
     try {
         let speciesInfo = {
-            name: name,
+            sp_name: sp_name,
             is_mammal: is_mammal
         };
 
-        let createSpecies = `INSERT INTO species (name, is_mammal)
+        let createSpecies = `INSERT INTO species (sp_name, is_mammal)
         VALUES ($1, $2)`;
 
-        await db.none(createSpecies, [name, is_mammal]);
+        await db.none(createSpecies, [sp_name, is_mammal]);
 
         response.json({
             status: 'success',

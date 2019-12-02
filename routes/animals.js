@@ -97,21 +97,54 @@ router.patch('/:id', async (request, response) => {
     let newNickname = request.body.nickname;
 
     try {
-        let patchInfo = {
-            species_id: newSpecies_id,
-            nickname: newNickname
+        if (!newSpecies_id && !newNickname) {
+            response.json({
+                status: 'failed',
+                message: 'Patch query cannot be blank',
+                payload: null
+            })
+        } else if (newSpecies_id && !newNickname) {
+            let patchQuery = `UPDATE animals SET species_id = $1 WHERE id = $2`
+            await db.none(patchQuery, [newSpecies_id, id]);
+            
+            response.json({
+                status: 'success',
+                message: 'Animal species ID sucessfully patched.',
+                payload: {
+                    patchInfo: {
+                        newSpeciesID: newSpecies_id
+                    }
+                }
+            })
+        } else if (!newSpecies_id && newNickname) {
+            let patchQuery = `UPDATE animals SET nickname = $1 WHERE id = $2`
+            await db.none(patchQuery, [newNickname, id]);
+
+            response.json({
+                status: 'success',
+                message: 'Animal nickname sucessfully patched.',
+                payload: {
+                    patchInfo: {
+                        newNickmane: newNickname
+                    }
+                }
+            })
+        } else {
+            let patchQuery = `UPDATE animals SET species_id = $1, nickname = $2 WHERE id = $3`
+            await db.none(patchQuery, [newSpecies_id, newNickname, id]);
+    
+            response.json({
+                status: 'success',
+                message: 'Animal sucessfully patched.',
+                payload: {
+                    patchInfo: {
+                        newSpecies_id: newSpecies_id,
+                        newNickmane: newNickname
+                    }
+                }
+            })
         }
-
-        let patchQuery = `UPDATE researchers SET species_id = $1, nickname = $2 WHERE id = $3`
-        await db.none(patchQuery, [newSpecies_id, newNickname, id]);
-
-        response.json({
-            status: 'success',
-            message: 'Researcher sucessfully patched.',
-            payload: {
-                patchInfo: patchInfo
-            }
-        })
+        
     } catch (error) {
         console.log(error);
         response.json({

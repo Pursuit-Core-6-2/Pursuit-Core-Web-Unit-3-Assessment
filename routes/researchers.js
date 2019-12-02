@@ -97,21 +97,53 @@ router.patch('/:id', async (request, response) => {
     let job_title = request.body.job_title;
 
     try {
-        let patchInfo = {
-            newName: name,
-            newTitle: job_title
+        if (!name && !job_title) {
+            response.json({
+                status: 'failed',
+                message: 'Patch query cannot be blank',
+                payload: null
+            })
+        } else if (name && !job_title) {
+            let patchQuery = `UPDATE researchers SET name = $1 WHERE id = $2`
+            await db.none(patchQuery, [name, id]);
+            
+            response.json({
+                status: 'success',
+                message: 'Researcher name sucessfully patched.',
+                payload: {
+                    patchInfo: {
+                        newName: name
+                    }
+                }
+            })
+        } else if (!name && job_title) {
+            let patchQuery = `UPDATE researchers SET job_title = $1 WHERE id = $2`
+            await db.none(patchQuery, [job_title, id]);
+
+            response.json({
+                status: 'success',
+                message: 'Researcher title sucessfully patched.',
+                payload: {
+                    patchInfo: {
+                        newTitle: job_title
+                    }
+                }
+            })
+        } else {
+            let patchQuery = `UPDATE researchers SET name = $1, job_title = $2 WHERE id = $3`
+            await db.none(patchQuery, [name, job_title, id]);
+
+            response.json({
+                status: 'success',
+                message: 'Researcher sucessfully patched.',
+                payload: {
+                    patchInfo: {
+                        newName: name,
+                        newTitle: job_title
+                    }
+                }
+            })
         }
-
-        let patchQuery = `UPDATE researchers SET name = $1, job_title = $2 WHERE id = $3`
-        await db.none(patchQuery, [name, job_title, id]);
-
-        response.json({
-            status: 'success',
-            message: 'Researcher sucessfully patched.',
-            payload: {
-                patchInfo: patchInfo
-            }
-        })
     } catch (error) {
         console.log(error);
         response.json({
