@@ -25,7 +25,7 @@ router.get("/", (req,res)=>{
 
 //get one researcher
 router.get("/:id",(req,res)=>{
-    db.one(`SELECT name FROM researchers Where id = $1`,[req.params.id])
+    db.one(`SELECT name, job_title  FROM researchers Where id = $1 `,[req.params.id])
     .then(function(data){
         const response = {
             researchers: data
@@ -68,18 +68,18 @@ router.patch("/:id",async(req,res)=>{
             let data;
             if (req.body.name && req.body.job_title) {
                 data = await db.one(
-                    `UPDATE researchers SET name = $/name/, job_title = $/job_title/ WHERE id = $/id/ `, 
+                    `UPDATE researchers SET name = $/name/, job_title = $/job_title/ WHERE id = $/id/ RETURNING *`, 
                     {id: req.params.id, name: req.body.name, job_title: req.body.job_title}
                 )
                 
             } else if (req.body.job_title) {
                 data = await db.one(
-                    `UPDATE researchers SET job_title = $/job_title/ WHERE id = $/id/ `, 
+                    `UPDATE researchers SET job_title = $/job_title/ WHERE id = $/id/ RETURNING *`, 
                     {id: req.params.id, job_title: req.body.job_title}
                 )
             } else {
                 data = await db.one(
-                    `UPDATE researchers SET name = $/name/ WHERE id = $/id/`, 
+                    `UPDATE researchers SET name = $/name/ WHERE id = $/id/RETURNING *`, 
                     {id: req.params.id, name: req.body.name}
                 )
             }

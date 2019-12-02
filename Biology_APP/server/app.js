@@ -18,8 +18,10 @@ app.use(bodyParser.urlencoded({
     extended: false
 }));
 app.use(bodyParser.json());
+
+
 app.use('/users',usersRouter);
-app.use('/researcher',researchRouter);
+app.use('/researchers',researchRouter);
 app.use('/species',speciesRouter);
 app.use('/animals',animalsRouter);
 app.use('/habitats',habitatsRouter);

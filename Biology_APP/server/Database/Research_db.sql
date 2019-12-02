@@ -6,13 +6,13 @@ CREATE DATABASE research_db;
 
 CREATE TABLE researchers(
     id SERIAL PRIMARY KEY,
-    name VARCHAR,
+    r_name VARCHAR,
     job_title VARCHAR
 );
 
 CREATE TABLE species(
     id SERIAL PRIMARY KEY,
-    name VARCHAR,
+    sp_name VARCHAR,
     is_mammal BOOLEAN
 );
 
@@ -35,7 +35,7 @@ CREATE TABLE sightings(
 );
 
 
-INSERT INTO researchers(name, job_title) VALUES
+INSERT INTO researchers(r_name, job_title) VALUES
 ('Mariana Aleta', 'Project Lead'),
 ('Javed', 'Senior Field Researcher'),
 ('Carolina', 'Field Researcher'),
@@ -43,7 +43,7 @@ INSERT INTO researchers(name, job_title) VALUES
 ('Ezra', 'Research Intern')
 ;
 
-INSERT INTO species(name, is_mammal) VALUES
+INSERT INTO species(sp_name, is_mammal) VALUES
 ('Dolphin', true),
 ('Moray Eel', false),
 ('Tiger Shark', false),
