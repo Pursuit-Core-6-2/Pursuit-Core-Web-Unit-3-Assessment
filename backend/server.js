@@ -5,7 +5,7 @@ const cors = require('cors')
 const researchersRouter = require('./routes/researchersRouter.js');
 const speciesRouter = require('./routes/speciesRouter');
 const animalsRouter = require('./routes/animalsRouter');
-// const habitatsRouter = require('./routes/habitatsRouter');
+const habitatsRouter = require('./routes/habitatsRouter');
 const sightingsRouter = require('./routes/sightingsRouter');
 
 const app = express();
@@ -20,7 +20,7 @@ app.use(express.urlencoded({
 app.use('/researchers', researchersRouter)
 app.use('/species', speciesRouter);
 app.use('/animals', animalsRouter);
-// app.use('/habitats', habitatsRouter);
+app.use('/habitats', habitatsRouter);
 app.use('/sightings', sightingsRouter);
 
 

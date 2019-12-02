@@ -76,9 +76,9 @@ VALUES
 INSERT INTO sightings
     (species_id, researcher_id, habitat_id)
 VALUES
-    (4, 4, 4),
+    (4, 2, 4),
     -- An Orca Whale was spotted by Jazmyn Gottfried in the Deeps.
-    (3, 1, 4),
+    (3, 3, 4),
     -- A Tiger Shark was spotted by Mariana Aleta in the Deeps.
     (5, 3, 3),
     -- A Moon Jelly was spotted by Carolina Itai in the Tide Pools.
@@ -86,7 +86,8 @@ VALUES
     -- A Moray Eel was spotted by Ezra Flip in the Coral Reef.
     (1, 2, 1),
     -- A Dolphin was spotted by Javed Patrick in the Shallows.
-    (2, 5, 1)  -- A Moray Eel was spotted by Ezra Flip in the Shallows.
+    (2, 5, 1)  
+    -- A Moray Eel was spotted by Ezra Flip in the Shallows.
 ;
 
 
