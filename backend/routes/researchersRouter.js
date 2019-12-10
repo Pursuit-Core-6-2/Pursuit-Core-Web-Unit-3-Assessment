@@ -58,10 +58,12 @@ router.post('/', async(req, res) => {
    
         let insertQuery = `INSERT INTO researchers (name, job_title) VALUES($1, $2)`
         await db.none(insertQuery, [req.body.name, req.body.job_title])
+            
         let data = {
             name: req.body.name,
             job_title: req.body.job_title
         }
+        //console.log('data', data)
        res.status(201)
         res.json({
             payload: data,
