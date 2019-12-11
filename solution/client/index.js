@@ -17,12 +17,28 @@ const createOptions = async (selectBox) => {
 };
 const displayAllSightings = async () => {
     let allSightingsArr = await getAllSightings();
-    console.log(allSightingsArr)
+    allSightingsArr.forEach(sightingsObj => {
+        return createSightingsPara(sightingsObj)
+    })
 }
 const getAllSightings = async () => {
     let url = `http://localhost:3000/sightings/`;
     let allSightingsObj = await axios(url).then((response) => {return response.data.payload});
     return allSightingsObj;
+}
+const createSightingsPara = (sightingObj) => {
+    let myList = document.querySelector("ul");
+    let name = sightingObj.r_name;
+    let animal = sightingObj.s_name;
+    let location = sightingObj.category;
+    let li = document.createElement("li");
+    if(animal[0].match(/^[aeiouAEIOU]/)) {
+        li.innerText = `An ${animal} was spotted by ${name} in the ${location}`
+    }
+    else {
+        li.innerText = `A ${animal} was spotted by ${name} in the ${location}`
+    }
+    myList.append(li)
 }
 const getSightings = async () => {
     const selectBox = document.querySelector('#selectTag');
