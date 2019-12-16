@@ -16,18 +16,26 @@ const createOptions = async (selectBox) => {
     });
 };
 const displayAllSightings = async () => {
+    let myList = document.querySelector("#list");
+    if(!myList){    
+    let myList = document.createElement("ul");
+        myList.id="list";
+    let container = document.querySelector("#container");
+        checkContainer(container);
+        container.append(myList);
     let allSightingsArr = await getAllSightings();
     allSightingsArr.forEach(sightingsObj => {
-        return createSightingsPara(sightingsObj)
+        return createSightingsList(sightingsObj)
     })
+    }
 }
 const getAllSightings = async () => {
     let url = `http://localhost:3000/sightings/`;
     let allSightingsObj = await axios(url).then((response) => {return response.data.payload});
     return allSightingsObj;
 }
-const createSightingsPara = (sightingObj) => {
-    let myList = document.querySelector("ul");
+const createSightingsList = (sightingObj) => {
+    let myList = document.querySelector("#list");
     let name = sightingObj.r_name;
     let animal = sightingObj.s_name;
     let location = sightingObj.category;
@@ -43,6 +51,7 @@ const createSightingsPara = (sightingObj) => {
 const getSightings = async () => {
     const selectBox = document.querySelector('#selectTag');
     let selectBoxValue = Number(selectBox.value);
+        console.log("selectBoxValue", selectBoxValue)
     let url = `http://localhost:3000/sightings/researchers/${selectBoxValue}`;
     let researcherSightings = await axios.get(url).then(response => {return response.data.payload});
     return researcherSightings;
@@ -52,28 +61,25 @@ const getReseacherById = async (id) => {
     let rObj = await axios.get(url).then((response) => {return response.data.payload});
     return rObj;
 }
-const getSpeciesById = async (id) => {
-    let url = `http://localhost:3000/species/${id}`;
-    let speciesObj = await axios.get(url).then(response => {return response.data.payload});
-    return speciesObj;
-}
-const getHabitatById = async (id) => {
-    let url = `http://localhost:3000/species/${id}`;
-    let habitatObj = await axios.get(url).then(response => {return response.data.payload});
-    return habitatObj;
-}
 const displayInfo = async() => {
-    let ul = document.querySelector('#list');
-    let li = document.createElement('li');
+    let researcherUl = document.createElement("ul");
+    let container = document.querySelector("#container");
     let sightingsArr = await getSightings();
-    sightingsArr.forEach((elem) => {
-        let researcherId = elem.researcher_id;
-        let speciesId = elem.species_id;
-        let habitatId = elem.habitat_id;
-        console.log(researcherId, speciesId, habitatId);
-    })
-        // li.innerText = `A ${speciesName} was spotted by ${researcherName} in the`
-        // ul.append(li);
+        sightingsArr.forEach((sightingsObj) => {
+            let researcher_name = sightingsObj.r_name;
+            let species_name = sightingsObj.s_name;
+            let habitat_name = sightingsObj.category;
+            let string = `A ${species_name} was spotted by ${researcher_name} in the ${habitat_name}`
+            let li = document.createElement('li');
+                li.innerText = string;
+                researcherUl.append(li);
+        })
+            checkContainer(container);
+            container.append(researcherUl)
 }
-
-//Main issue with the entire frontend was using async await functions within each other, resulting in promises being produced without being resolved. Potential solution would be joining tables needed (researchers, species and habitats) to make information easily accessible through a single axios call. After that, it would be possible to key into given array objects and obtain information needed to be displayed on frontend.
+const checkContainer = (container) => {
+    if(container.querySelector('ul')) {
+        let ul = document.querySelector('ul');
+        container.removeChild(ul);
+    }
+}
